@@ -24,12 +24,21 @@ import javax.swing.JTextField;
  */
 public class JFNovoCurso extends javax.swing.JFrame {
 
-    JTextField jTxt1;
+    JTextField jTxt1, jTFV;
     JComboBox<String> jCbx1;
     JButton jButton;
     int id;
-    String nomeCurso;
+    String nomeCurso, vagas;
     String tipoCurso;
+
+    public String getVagas() {
+        vagas = jTFVagas.getText();
+        return vagas;
+    }
+
+    public void setVagas(String vagas) {
+        this.vagas = vagas;
+    }
 
     public String getNomeCurso() {
         return nomeCurso;
@@ -71,6 +80,7 @@ public class JFNovoCurso extends javax.swing.JFrame {
         this.jTxt1 = jTFNomeCurso;
         this.jCbx1 = jComboBoxTipoCurso;
         this.jButton = jButtonSalvar;
+        this.jTFV = jTFVagas;
 
     }
 
@@ -84,6 +94,8 @@ public class JFNovoCurso extends javax.swing.JFrame {
         jButtonSalvar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jComboBoxTipoCurso = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        jTFVagas = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuCurso = new javax.swing.JMenu();
         jMenuPrincipal = new javax.swing.JMenuItem();
@@ -121,6 +133,8 @@ public class JFNovoCurso extends javax.swing.JFrame {
                 jComboBoxTipoCursoActionPerformed(evt);
             }
         });
+
+        jLabel4.setText("Vagas: ");
 
         jMenuCurso.setText("Importar");
 
@@ -181,41 +195,43 @@ public class JFNovoCurso extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 112, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButtonSalvar)
-                        .addGap(198, 198, 198))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(9, 9, 9)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTFNomeCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBoxTipoCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(158, 158, 158))))
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButtonSalvar)
+                .addGap(198, 198, 198))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3)
-                .addGap(207, 207, 207))
+                .addGap(208, 208, 208))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTFNomeCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxTipoCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTFVagas, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(68, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(54, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jComboBoxTipoCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTFNomeCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jComboBoxTipoCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel4)
+                    .addComponent(jTFVagas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32)
                 .addComponent(jButtonSalvar)
                 .addGap(43, 43, 43))
@@ -232,11 +248,7 @@ public class JFNovoCurso extends javax.swing.JFrame {
 
     private void jMenuNovaDisiciplinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuNovaDisiciplinaActionPerformed
         JFNovaDisciplina obj = null;
-        try {
-            obj = new JFNovaDisciplina();
-        } catch (SQLException ex) {
-            Logger.getLogger(JFNovoCurso.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        obj = new JFNovaDisciplina();
         obj.setVisible(true);
     }//GEN-LAST:event_jMenuNovaDisiciplinaActionPerformed
 
@@ -247,11 +259,7 @@ public class JFNovoCurso extends javax.swing.JFrame {
 
     private void jMenuNovaMatrizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuNovaMatrizActionPerformed
         JFNovaMatriz obj = null;
-        try {
-            obj = new JFNovaMatriz();
-        } catch (SQLException ex) {
-            Logger.getLogger(JFNovoCurso.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        obj = new JFNovaMatriz();
         obj.setVisible(true);
     }//GEN-LAST:event_jMenuNovaMatrizActionPerformed
 
@@ -270,7 +278,7 @@ public class JFNovoCurso extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonSalvarActionPerformed
 
     void inOrUp() {
-                        
+
         if (getId() == 0) {
             inserirDados();
         } else {
@@ -285,9 +293,10 @@ public class JFNovoCurso extends javax.swing.JFrame {
         String tipoCurso = jComboBoxTipoCurso.getSelectedItem().toString();
 
         try {
-            PreparedStatement stmt = (PreparedStatement) con.prepareStatement("INSERT INTO curso (nomeCurso, tipoCurso) VALUES( "
-                    + "'" + nomeCurso + "',"
-                    + "'" + tipoCurso + "'"
+            PreparedStatement stmt = (PreparedStatement) con.prepareStatement("INSERT INTO curso (nomeCurso, tipoCurso, vagas) VALUES( "
+                    + "'" + nomeCurso + "', "
+                    + "'" + tipoCurso + "', "
+                    + "'" + getVagas() + "'"
                     + ")");
             stmt.executeUpdate();
             stmt.close();
@@ -312,13 +321,13 @@ public class JFNovoCurso extends javax.swing.JFrame {
 
         Connection conn = new ConnectionFactory().getConnection();
 
-        
         setNomeCurso(jTxt1.getText());
         setTipoCurso(jComboBoxTipoCurso.getSelectedItem().toString());
-        
+        setVagas(jTFVagas.getText());
+        jTFVagas.setText(getVagas());
 
         String queryUp = "UPDATE curso SET nomeCurso = '" + nomeCurso + "'"
-                + ", tipoCurso = '" +  tipoCurso + "' WHERE idCurso = "
+                + ", tipoCurso = '" + tipoCurso + ",' vagas = '" + getVagas() + "' WHERE idCurso = "
                 + "'" + getId() + "'";
 
         try {
@@ -382,6 +391,7 @@ public class JFNovoCurso extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -392,5 +402,6 @@ public class JFNovoCurso extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuPesquisarMatriz;
     private javax.swing.JMenuItem jMenuPrincipal;
     private javax.swing.JTextField jTFNomeCurso;
+    private javax.swing.JTextField jTFVagas;
     // End of variables declaration//GEN-END:variables
 }

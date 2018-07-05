@@ -224,11 +224,7 @@ public class JFrameMain extends javax.swing.JFrame {
 
     private void jMenuNovaDisiciplinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuNovaDisiciplinaActionPerformed
         JFNovaDisciplina obj=null; 
-        try {
-            obj = new JFNovaDisciplina();
-        } catch (SQLException ex) {
-            Logger.getLogger(JFrameMain.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        obj = new JFNovaDisciplina();
         obj.setVisible(true);
     }//GEN-LAST:event_jMenuNovaDisiciplinaActionPerformed
 
@@ -239,11 +235,7 @@ public class JFrameMain extends javax.swing.JFrame {
 
     private void jMenuNovaMatrizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuNovaMatrizActionPerformed
         JFNovaMatriz obj = null;
-        try {
-            obj = new JFNovaMatriz();
-        } catch (SQLException ex) {
-            Logger.getLogger(JFrameMain.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        obj = new JFNovaMatriz();
         obj.setVisible(true);
     }//GEN-LAST:event_jMenuNovaMatrizActionPerformed
 

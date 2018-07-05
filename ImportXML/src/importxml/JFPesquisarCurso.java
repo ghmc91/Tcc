@@ -37,8 +37,21 @@ public class JFPesquisarCurso extends javax.swing.JFrame {
     DefaultTableModel modelo = new DefaultTableModel();
     JButton atualizar;
     String tipoCurso = "";
-    String nomeCurso = "";
+    String nomeCurso = "", vagas = "";
     int id = 0;
+
+    public String getVagas() {
+        for (int i = 0; i <= table.getSelectedRow(); i++) {
+            vagas = (String) table.getValueAt(i, 2);
+        }
+        return vagas;
+    }
+
+    public void setVagas(String vagas) {
+        this.vagas = vagas;
+    }
+    
+    
 
     public int getId() {
         return id;
@@ -102,11 +115,13 @@ public class JFPesquisarCurso extends javax.swing.JFrame {
             modelo = (DefaultTableModel) table.getModel();
             modelo.addColumn("tipoCurso");
             modelo.addColumn("nomeCurso");
+            modelo.addColumn("Vagas");
 
             while (rs.next()) {
                 modelo.addRow(new Object[]{
                     rs.getString("tipoCurso"),
-                    rs.getString("nomeCurso")
+                    rs.getString("nomeCurso"), 
+                    rs.getString("Vagas")
                 });
             }
             table.setModel(modelo);
@@ -281,27 +296,30 @@ public class JFPesquisarCurso extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(40, 40, 40)
-                        .addComponent(jLabel2)
-                        .addGap(42, 42, 42)
                         .addComponent(jComboBoxTipoCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButtonPesquisar))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(170, 170, 170)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(74, 74, 74)
-                        .addComponent(jScrollPaneCursos, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(109, 109, 109)
                         .addComponent(jButtonAlterar)
-                        .addGap(48, 48, 48)
+                        .addGap(166, 166, 166)
                         .addComponent(jButtonExcluirCurso)))
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addGap(174, 174, 174))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(jScrollPaneCursos, javax.swing.GroupLayout.PREFERRED_SIZE, 558, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(158, 158, 158)
+                        .addComponent(jLabel2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(287, 287, 287)
+                        .addComponent(jLabel1)))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -332,11 +350,7 @@ public class JFPesquisarCurso extends javax.swing.JFrame {
 
     private void jMenuNovaDisiciplinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuNovaDisiciplinaActionPerformed
         JFNovaDisciplina obj = null;
-        try {
-            obj = new JFNovaDisciplina();
-        } catch (SQLException ex) {
-            Logger.getLogger(JFPesquisarCurso.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        obj = new JFNovaDisciplina();
         obj.setVisible(true);
     }//GEN-LAST:event_jMenuNovaDisiciplinaActionPerformed
 
@@ -347,11 +361,7 @@ public class JFPesquisarCurso extends javax.swing.JFrame {
 
     private void jMenuNovaMatrizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuNovaMatrizActionPerformed
         JFNovaMatriz obj = null;
-        try {
-            obj = new JFNovaMatriz();
-        } catch (SQLException ex) {
-            Logger.getLogger(JFPesquisarCurso.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        obj = new JFNovaMatriz();
         obj.setVisible(true);
     }//GEN-LAST:event_jMenuNovaMatrizActionPerformed
 
@@ -372,7 +382,7 @@ public class JFPesquisarCurso extends javax.swing.JFrame {
 
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
 
-        String sql = "SELECT tipoCurso, nomeCurso FROM Curso WHERE tipoCurso = '"
+        String sql = "SELECT tipoCurso, nomeCurso, vagas FROM Curso WHERE tipoCurso = '"
                 + jComboBoxTipoCurso.getSelectedItem().toString() + "'";
         popularJtable(sql);
 
@@ -384,6 +394,9 @@ public class JFPesquisarCurso extends javax.swing.JFrame {
 
         janela.jTxt1.setText(getNomeCurso());
         janela.jCbx1.setSelectedItem(getTipoCurso());
+        janela.jTFV.setText(getVagas());
+        
+        
         String query = "SELECT idCurso FROM Curso WHERE nomeCurso = "
                 + "'" + getNomeCurso() + "' AND tipoCurso = "
                 + "'" + getTipoCurso() + "'";

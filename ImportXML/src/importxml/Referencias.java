@@ -17,9 +17,10 @@ public class Referencias extends javax.swing.JFrame {
     String tipoRef, titulo, edicao, autor, anoPublicacao;
     JComboBox<String> jCBtipoRef;
     JTextField jTTitulo, jTEdicao, jTAutor, jTAnoPublicacao;
-    int idMatriz, tR, idRef;
+    int idDisciplina, tR, idRef;
 
     public String getTipoRef() {
+        tipoRef = jComboBoxTipoRef.getSelectedItem().toString();
         return tipoRef;
     }
 
@@ -59,12 +60,12 @@ public class Referencias extends javax.swing.JFrame {
         this.anoPublicacao = anoPublicacao;
     }
 
-    public int getIdMatriz() {
-        return idMatriz;
+    public int getIdDisciplina() {
+        return idDisciplina;
     }
 
-    public void setIdMatriz(int idMatriz) {
-        this.idMatriz = idMatriz;
+    public void setIdDisciplina(int idDisciplina) {
+        this.idDisciplina = idDisciplina;
     }
 
     public int getIdRef() {
@@ -74,6 +75,21 @@ public class Referencias extends javax.swing.JFrame {
     public void setIdRef(int idRef) {
         this.idRef = idRef;
     }
+
+    public int gettR() {
+        if(getTipoRef().equals("Básica")){
+            tR = 0;
+        }else if(getTipoRef().equals("Complementar")){
+            tR = 1;
+        }
+        return tR;
+    }
+
+    public void settR(int tR) {
+        this.tR = tR;
+    }
+    
+    
 
     public Referencias() {
         initComponents();
@@ -89,12 +105,12 @@ public class Referencias extends javax.swing.JFrame {
         
     }
 
-    void insert(String tipoRef, String titulo, String autor, String edicao, String anoPublicacao) {
+    void insert(int tR, String titulo, String autor, String edicao, String anoPublicacao) {
         Connection conn = new ConnectionFactory().getConnection();
         String query = "INSERT INTO referencias_adotadas(tipoReferencia, "
-                + "Titulo, Autor, Edicao, anoPublicacao, Matriz_idMatriz) VALUES("
+                + "Titulo, Autor, Editora, anoPublicacao, Disciplina) VALUES("
                 + "'" + tR + "', '" + titulo + "', '" + autor + "', "
-                + "'" + edicao + "', '" + anoPublicacao + "', '" + getIdMatriz() + "')";
+                + "'" + edicao + "', '" + anoPublicacao + "', '" + getIdDisciplina()+ "')";
         try {
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.executeUpdate();
@@ -105,17 +121,11 @@ public class Referencias extends javax.swing.JFrame {
         }
     }
 
-    void update(String tipoRef, String titulo, String autor, String edicao, String anoPublicacao) {
-
-        int tR = 0;
-        if (tipoRef == "Básica") {
-            tR = 0;
-        } else {
-            tR = 1;
-        }
+    void update(int tR, String titulo, String autor, String edicao, String anoPublicacao) {
+                
         Connection conn = new ConnectionFactory().getConnection();
         String query = "UPDATE referencias_adotadas SET tipoReferencia = '" + tR + "',"
-                + " Titulo = '" + titulo + "', Autor = '" + autor + "', Edicao = '" + edicao + "',"
+                + " Titulo = '" + titulo + "', Autor = '" + autor + "', Editora = '" + edicao + "',"
                 + " anoPublicacao = '" + anoPublicacao + "' WHERE idReferencia = '" + getIdRef() + "'";
         try {
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -155,7 +165,7 @@ public class Referencias extends javax.swing.JFrame {
 
         jLabel6.setText("Título:");
 
-        jLabel7.setText("Edição");
+        jLabel7.setText("Editora");
 
         jLabel8.setText("Autor");
 
@@ -210,7 +220,7 @@ public class Referencias extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jBSalvar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jTFAnoPublicacao))))))
-                .addContainerGap(90, Short.MAX_VALUE))
+                .addContainerGap(87, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -268,16 +278,20 @@ public class Referencias extends javax.swing.JFrame {
         edicao = jTEdicao.getText();
         anoPublicacao = jTAnoPublicacao.getText();
 
-        if (tipoRef.equals("Básica")) {
-            tR = 0;
-        } else if (tipoRef.equals("Complementar")) {
-
-        }
+        
         if (getIdRef() == 0) {
-            insert(tipoRef, titulo, autor, edicao, anoPublicacao);
+            insert(gettR(), titulo, autor, edicao, anoPublicacao);
+            int opcao = JOptionPane.showConfirmDialog(this, "Deseja inserir a referencia bibliográfica?",
+                    "Atenção", JOptionPane.YES_NO_OPTION);
+            if (opcao == JOptionPane.YES_OPTION) {
+            this.dispose();
+            Referencias rf = new Referencias();
+            rf.setIdDisciplina(getIdDisciplina());
+            rf.setVisible(true);
+            }
         } else {
 
-            update(tipoRef, titulo, autor, edicao, anoPublicacao);
+            update(gettR(), titulo, autor, edicao, anoPublicacao);
         }
     }//GEN-LAST:event_jBSalvarActionPerformed
 

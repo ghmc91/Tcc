@@ -88,7 +88,7 @@
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace pref="90" max="32767" attributes="0"/>
+                  <EmptySpace pref="87" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -156,7 +156,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel7">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Edi&#xe7;&#xe3;o"/>
+            <Property name="text" type="java.lang.String" value="Editora"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jTFEdicao">

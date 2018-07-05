@@ -26,14 +26,14 @@ public class JFrameConsReferencias extends javax.swing.JFrame {
     private JTable table = new JTable();
     DefaultTableModel modelo = new DefaultTableModel();
     String titulo;
-    int idMatriz, idReferencia;
+    int idDisciplina, idReferencia;
 
-    public int getIdMatriz() {
-        return idMatriz;
+    public int getIdDisciplina() {
+        return idDisciplina;
     }
 
-    public void setIdMatriz(int idMatriz) {
-        this.idMatriz = idMatriz;
+    public void setIdDisciplina(int idDisciplina) {
+        this.idDisciplina = idDisciplina;
     }
 
     public JFrameConsReferencias() {
@@ -48,26 +48,26 @@ public class JFrameConsReferencias extends javax.swing.JFrame {
         Connection conn = new ConnectionFactory().getConnection();
 
         modelo = (DefaultTableModel) table.getModel();
-        modelo.addColumn("Matriz_idMatriz");
+        modelo.addColumn("idDisciplina");
         modelo.addColumn("tipoReferencia");
         modelo.addColumn("Titulo");
         modelo.addColumn("Autor");
         modelo.addColumn("Edicao");
         modelo.addColumn("anoPublicacao");
 
-        String sql = "SELECT Matriz_idMatriz, tipoReferencia, Titulo, Autor, "
-                + "Edicao, anoPublicacao FROM referencias_adotadas WHERE Matriz_idMatriz = '"
-                + "" + idMatriz + "'";
+        String sql = "SELECT Disciplina, tipoReferencia, Titulo, Autor, "
+                + "Editora, anoPublicacao FROM referencias_adotadas WHERE Disciplina = '"
+                + "" + idDisciplina + "'";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 modelo.addRow(new Object[]{
-                    rs.getString("Matriz_idMatriz"),
+                    rs.getString("Disciplina"),
                     rs.getString("tipoReferencia"),
                     rs.getString("Titulo"),
                     rs.getString("Autor"),
-                    rs.getString("Edicao"),
+                    rs.getString("Editora"),
                     rs.getString("anoPublicacao")
                 });
             }
@@ -137,34 +137,35 @@ public class JFrameConsReferencias extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(41, 41, 41)
+                        .addGap(39, 39, 39)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPaneReferencias, javax.swing.GroupLayout.PREFERRED_SIZE, 583, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButtonAdicionar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButtonExcluir)
-                                .addGap(9, 9, 9))
-                            .addComponent(jScrollPaneReferencias, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(263, 263, 263)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jButtonAlterar)
+                                        .addGap(64, 64, 64)
+                                        .addComponent(jButtonExcluir))))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(161, 161, 161)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButtonAlterar)
-                            .addComponent(jLabel1))))
-                .addContainerGap(52, Short.MAX_VALUE))
+                        .addComponent(jButtonAdicionar)))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(37, 37, 37)
+                .addGap(43, 43, 43)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(29, 29, 29)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonAlterar)
                     .addComponent(jButtonExcluir)
                     .addComponent(jButtonAdicionar))
-                .addGap(35, 35, 35)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPaneReferencias, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(59, Short.MAX_VALUE))
         );
@@ -185,7 +186,7 @@ public class JFrameConsReferencias extends javax.swing.JFrame {
 
     private void jButtonAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdicionarActionPerformed
         Referencias referencias = new Referencias();
-        referencias.setIdMatriz(idMatriz);
+        referencias.setIdDisciplina(getIdDisciplina());
         referencias.setVisible(true);
     }//GEN-LAST:event_jButtonAdicionarActionPerformed
 
@@ -199,7 +200,7 @@ public class JFrameConsReferencias extends javax.swing.JFrame {
         String anoPulicacao = table.getValueAt(linha, 5).toString();
         
         String query = "SELECT idReferencia FROM referencias_adotadas "
-                + "WHERE Matriz_idMatriz = " + getIdMatriz() + " "
+                + "WHERE Disciplina = " + getIdDisciplina() + " "
                 + "AND Titulo = '" + titulo + "'";
         try {
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -212,7 +213,7 @@ public class JFrameConsReferencias extends javax.swing.JFrame {
         }
 
         Referencias referencias = new Referencias();
-        referencias.setIdMatriz(getIdMatriz());
+        referencias.setIdDisciplina(getIdDisciplina());
         referencias.setIdRef(idReferencia);
         referencias.jCBtipoRef.setSelectedItem(tipoRef);
         referencias.jTTitulo.setText(titulo);
@@ -229,7 +230,7 @@ public class JFrameConsReferencias extends javax.swing.JFrame {
         titulo = table.getValueAt(linha, 2).toString();
 
         String query = "SELECT idReferencia FROM referencias_adotadas "
-                + "WHERE Matriz_idMatriz = " + getIdMatriz() + " "
+                + "WHERE Disciplina = " + getIdDisciplina() + " "
                 + "AND Titulo = '" + titulo + "'";
         try {
             PreparedStatement stmt = conn.prepareStatement(query);
