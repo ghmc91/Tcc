@@ -364,13 +364,7 @@ public class JFrameMain extends javax.swing.JFrame {
                 List<Object> columns;
                 List<Object> qtdEx;
                 NodeList no = doc.getElementsByTagName("v007");
-                
-                System.out.println(no);
-                
-                
-                
-                
-               
+   
                 //TODO: Celso
                 //Tem que realizar uma conta do número de exemplares, com base no v007
                 columns = Arrays //v69 ISBN e v002 é id do 
