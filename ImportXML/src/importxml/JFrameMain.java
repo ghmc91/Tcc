@@ -15,6 +15,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.Element;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -23,6 +24,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -200,15 +202,14 @@ public class JFrameMain extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * O Botão procurar chama a janela para selecionar o arquivo xml
-     * através do método buscarJFileChooser armazenado na variável arquivo
-     * escolhido
+     * O Botão procurar chama a janela para selecionar o arquivo xml através do
+     * método buscarJFileChooser armazenado na variável arquivo escolhido
      */
     private void jButtonProcurarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonProcurarActionPerformed
         arquivoEscolhido = buscarJFileChooser();
 
     }//GEN-LAST:event_jButtonProcurarActionPerformed
-    
+
     //    
     private void jButtonImportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonImportarActionPerformed
         inserirDados(xmlFile);
@@ -217,7 +218,7 @@ public class JFrameMain extends javax.swing.JFrame {
     private void jMenuNovoCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuNovoCursoActionPerformed
         JFNovoCurso obj = new JFNovoCurso();
         obj.setVisible(true);
-        
+
     }//GEN-LAST:event_jMenuNovoCursoActionPerformed
 
     private void jMenPesquisarCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenPesquisarCursoActionPerformed
@@ -226,7 +227,7 @@ public class JFrameMain extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenPesquisarCursoActionPerformed
 
     private void jMenuNovaDisiciplinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuNovaDisiciplinaActionPerformed
-        JFNovaDisciplina obj=null; 
+        JFNovaDisciplina obj = null;
         obj = new JFNovaDisciplina();
         obj.setVisible(true);
     }//GEN-LAST:event_jMenuNovaDisiciplinaActionPerformed
@@ -283,7 +284,7 @@ public class JFrameMain extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextAreaInfo;
     // End of variables declaration//GEN-END:variables
 
-     //Função para selecionar o arquivo xml a ser importado     
+    //Função para selecionar o arquivo xml a ser importado     
     private File buscarJFileChooser() {
         try {
             JFileChooser jFileChooser = new JFileChooser();
@@ -295,7 +296,7 @@ public class JFrameMain extends javax.swing.JFrame {
             jFileChooser.setFileFilter(filt);//Selecionar o tipo de arquivo
             //jFileChooser.setApproveButtonText("Abrir");
             //jFileChooser.setApproveButtonToolTipText("Abrir");
-            
+
             jFileChooser.setDialogTitle("Selecione o arquivo xml");
             jFileChooser.setFileFilter(new FileTypeFilter(".xml", "XML File"));
             int result = jFileChooser.showSaveDialog(null);
@@ -313,7 +314,7 @@ public class JFrameMain extends javax.swing.JFrame {
         return null;
 
     }
-    
+
     //Função para inserir os dados obtidos do arquivo xml
     public void inserirDados(File arquivo) {
         //Testando o carregamento do driver jdbc
@@ -330,82 +331,77 @@ public class JFrameMain extends javax.swing.JFrame {
         con = new ConnectionFactory().getConnection();
         //Convertendo o arquivo xml
         try {
-            
+
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(arquivo);
-            
+
             XPath xpath = XPathFactory.newInstance().newXPath();
             Object res = xpath.evaluate("/db/rec", doc, XPathConstants.NODESET);
-            
+
             // Comando para popular a coluna titulo da tabela catalogo
             String sqlTx = "INSERT INTO catalogo (idPHL, isbn, titulo, autor, edicao, anoPublicacao, editora, qtdEx) VALUES (?,?,?,?,?,?,?,?)";
             PreparedStatement stmt = con.prepareStatement(sqlTx);
-            
+
             /*
             PreparedStatement stmt = con
                     .prepareStatement("INSERT IGNORE INTO catalogo (isbn, titulo, autor, edicao, anoPublicacao, editora, qtdEx) "
                             + "VALUES (?,?,?,?,?,?,?)");
-            */
-            
+             */
             // Lista de nós reconhecidos pela tag 'rec'
             NodeList nList = doc.getElementsByTagName("rec");
             
-            
+
             /**
              * loop para extrair os titulos dos livros que estão contidos no
              * elemento filho especificado no segundo parâmetro da função
-             * getTextContent (abaixo da função principal) e inserir os
-             * dados na coluna titulo da tabela catalgo
-             * isbn, titulo, autor, edicao, anoPublicacao, editora, qtdEx
+             * getTextContent (abaixo da função principal) e inserir os dados na
+             * coluna titulo da tabela catalgo isbn, titulo, autor, edicao,
+             * anoPublicacao, editora, qtdEx
              */
             for (int i = 0; i < nList.getLength(); i++) {
                 Node node = nList.item(i);
-                List<Object> columns;
-                List<Object> qtdEx;
-                NodeList no = doc.getElementsByTagName("v007");
-   
+                List<Object> columns = null;
+
                 //TODO: Celso
                 //Tem que realizar uma conta do número de exemplares, com base no v007
                 columns = Arrays //v69 ISBN e v002 é id do 
                         .asList(getTextContent(node, "v002"), //TODO: Celso - não é o ISBN resolver!!!
-                                getTextContent(node, "v069"), 
+                                getTextContent(node, "v069"),
                                 getTextContent(node, "v018"),
                                 getTextContent(node, "v016"),
                                 getTextContent(node, "v063"),
                                 getTextContent(node, "v064"),
                                 getTextContent(node, "v062"),
-                                no.getLength());// getTextContent(node, "v022")
-                
+                                getCount(node));
+
                 //Loop para ir preenchendo as colunas da tabela catalogo
                 for (int n = 0; n < columns.size(); n++) {
-                 if (i==14){
-                        System.out.println(columns.get(n));
+                    if (i == 14) {
+
                     }
-                    if (n == 1){
-                        if (columns.get(n) == null){
-                          stmt.setInt(n + 1,0);  
+                    if (n == 1) {
+                        if (columns.get(n).toString().isEmpty()) {
+                            stmt.setInt(n + 1, 0);
+                        } else {
+                            stmt.setString(n + 1, columns.get(n).toString());
                         }
-                        else{
-                            stmt.setString(n + 1, (String) columns.get(n));
-                        }
-                    }
-                    else{
-                        stmt.setString(n + 1, (String) columns.get(n));    
+                    } else {
+                        stmt.setString(n + 1, columns.get(n).toString());
                     }
                 }
                 //System.out.println(stmt.toString());
                 stmt.execute();
-                
+
             }
             //Mensagem para informar que os dados foram inserirdos com sucesso
-            JOptionPane.showMessageDialog(null, "Dados inseridos com sucesso!");
+            JOptionPane.showMessageDialog(this, "Dados inseridos com sucesso!");
         } catch (IOException | SQLException | ParserConfigurationException | XPathExpressionException | SAXException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao inserir dados");
+            JOptionPane.showMessageDialog(this, "Erro ao inserir dados");
             System.out.println();
             e.printStackTrace();
         }
-        
+
         // Capturando exceção SQL
         try {
             con.close();
@@ -427,6 +423,20 @@ public class JFrameMain extends javax.swing.JFrame {
             }
         }
         return "";
+
+    }
+
+    private static int getCount(Node parentNode) {
+        int qtdEx = 0;
+        NodeList nList = parentNode.getChildNodes();
+        for (int i = 0; i < nList.getLength(); i++) {
+            Node n = nList.item(i);
+            String name = n.getNodeName();
+            if ("v007".equals(name)) {
+                qtdEx++;
+            }
+        }
+        return qtdEx++;
 
     }
 
