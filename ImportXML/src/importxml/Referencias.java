@@ -2,10 +2,17 @@ package importxml;
 
 import com.mysql.jdbc.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -14,21 +21,26 @@ import javax.swing.JTextField;
 public class Referencias extends javax.swing.JFrame {
 
     Connection con = new ConnectionFactory().getConnection();
-    String tipoRef, titulo, edicao, autor, anoPublicacao;
-    JComboBox<String> jCBtipoRef;
-    JTextField jTTitulo, jTEdicao, jTAutor, jTAnoPublicacao;
-    int idDisciplina, tR, idRef;
+    JTable table = new JTable();
+    DefaultTableModel modelo = new DefaultTableModel();
+    String titulo, codDisciplina, nomeDisciplina, autor;
+    int tipoRef;
+    JTextField jTTitulo, jTFAutor;
+    long idPHL;
+    List<Long> resultList = new ArrayList<>();
 
-    public String getTipoRef() {
-        tipoRef = jComboBoxTipoRef.getSelectedItem().toString();
-        return tipoRef;
+    public long getIdPHL() {
+        int t = table.getSelectedRow();
+        idPHL = resultList.get(t);
+        return idPHL;
     }
 
-    public void setTipoRef(String tipoRef) {
-        this.tipoRef = tipoRef;
+    public void setIdPHL(long idPHL) {
+        this.idPHL = idPHL;
     }
 
     public String getTitulo() {
+        titulo = jTFTitulo.getText();
         return titulo;
     }
 
@@ -36,107 +48,103 @@ public class Referencias extends javax.swing.JFrame {
         this.titulo = titulo;
     }
 
-    public String getEdicao() {
-        return edicao;
+    public int getTipoRef() {
+        if (jRadioBasica.isSelected()) {
+            tipoRef = 1;
+        } else if (jRadioComplementar.isSelected()) {
+            tipoRef = 2;
+        }
+        return tipoRef;
     }
 
-    public void setEdicao(String edicao) {
-        this.edicao = edicao;
+    public void setTipoRef(int tipoRef) {
+        this.tipoRef = tipoRef;
+    }
+
+    public String getCodDisciplina() {
+        return codDisciplina;
+    }
+
+    public void setCodDisciplina(String codDisciplina) {
+        this.codDisciplina = codDisciplina;
+    }
+
+    public String getNomeDisciplina() {
+        return nomeDisciplina;
+    }
+
+    public void setNomeDisciplina(String nomeDisciplina) {
+        this.nomeDisciplina = nomeDisciplina;
     }
 
     public String getAutor() {
+        autor = jTextFieldAutor.getText();
         return autor;
     }
 
     public void setAutor(String autor) {
         this.autor = autor;
     }
-
-    public String getAnoPublicacao() {
-        return anoPublicacao;
-    }
-
-    public void setAnoPublicacao(String anoPublicacao) {
-        this.anoPublicacao = anoPublicacao;
-    }
-
-    public int getIdDisciplina() {
-        return idDisciplina;
-    }
-
-    public void setIdDisciplina(int idDisciplina) {
-        this.idDisciplina = idDisciplina;
-    }
-
-    public int getIdRef() {
-        return idRef;
-    }
-
-    public void setIdRef(int idRef) {
-        this.idRef = idRef;
-    }
-
-    public int gettR() {
-        if(getTipoRef().equals("Básica")){
-            tR = 0;
-        }else if(getTipoRef().equals("Complementar")){
-            tR = 1;
-        }
-        return tR;
-    }
-
-    public void settR(int tR) {
-        this.tR = tR;
-    }
     
     
 
     public Referencias() {
         initComponents();
-        jComboBoxTipoRef.addItem("Básica");
-        jComboBoxTipoRef.addItem("Complementar");
+        ButtonGroup buttonGroupR = new ButtonGroup();
+        buttonGroupR.add(jRadioBasica);
+        buttonGroupR.add(jRadioComplementar);
 
-        this.jCBtipoRef = jComboBoxTipoRef;
-        this.jTAutor = jTFAutor;
-        this.jTAnoPublicacao = jTFAnoPublicacao;
-        this.jTTitulo = jTFTitulo;
-        this.jTEdicao = jTFEdicao;
-        
-        
     }
 
-    void insert(int tR, String titulo, String autor, String edicao, String anoPublicacao) {
-        Connection conn = new ConnectionFactory().getConnection();
-        String query = "INSERT INTO referencias_adotadas(tipoReferencia, "
-                + "Titulo, Autor, Editora, anoPublicacao, Disciplina) VALUES("
-                + "'" + tR + "', '" + titulo + "', '" + autor + "', "
-                + "'" + edicao + "', '" + anoPublicacao + "', '" + getIdDisciplina()+ "')";
+    void popularJTable() {
+        
+      
+        modelo = (DefaultTableModel) table.getModel();
+        modelo.addColumn("Título");
+        modelo.addColumn("Autor");
+        modelo.addColumn("Editora");
+        modelo.addColumn("Ano publicação");
+        modelo.addColumn("Quantidade de exemplares");
+
+        String query = "SELECT DISTINCT idPHL, titulo, autor, editora, anoPublicacao, qtdEx FROM catalogo "
+                + "WHERE titulo LIKE '%" + getTitulo() + "%' AND autor LIKE '%" + getAutor() + "%'";
+
         try {
-            PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.executeUpdate();
-            JOptionPane.showMessageDialog(this, "Inserido com sucesso!");
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Impossível inserir");
-            ex.printStackTrace();
-        }
-    }
-
-    void update(int tR, String titulo, String autor, String edicao, String anoPublicacao) {
+            PreparedStatement stmt = con.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                modelo.addRow(new Object[]{
+                    rs.getString("titulo"),
+                    rs.getString("autor"),
+                    rs.getString("editora"),
+                    rs.getString("anoPublicacao"),
+                    rs.getInt("qtdEx")
+                });
+                resultList.add(rs.getLong("idPHL"));
                 
-        Connection conn = new ConnectionFactory().getConnection();
-        String query = "UPDATE referencias_adotadas SET tipoReferencia = '" + tR + "',"
-                + " Titulo = '" + titulo + "', Autor = '" + autor + "', Editora = '" + edicao + "',"
-                + " anoPublicacao = '" + anoPublicacao + "' WHERE idReferencia = '" + getIdRef() + "'";
-        try {
-            PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.executeUpdate();
+            }
             stmt.close();
-            conn.close();
-            JOptionPane.showMessageDialog(this, "Atualizado com sucesso");
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Impossível atualizar");
             ex.printStackTrace();
         }
+
+        table.setModel(modelo);
+        jScrollPaneReferencias.setViewportView(table);
+
+    }
+
+    void insert() {
+        String ins2 = "INSERT INTO disciplina_livros(livro, disciplina, tipoReferencia) VALUES ("
+                + "" + getIdPHL() + ", '" + getCodDisciplina() + "', " + getTipoRef() + ")";
+        try {
+            PreparedStatement stmt2 = con.prepareStatement(ins2);
+            stmt2.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Inserido com sucesso");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Impossível Inserir");
+            ex.printStackTrace();
+        }
+
     }
 
     @SuppressWarnings("unchecked")
@@ -145,109 +153,115 @@ public class Referencias extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jComboBoxTipoRef = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         jTFTitulo = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        jTFEdicao = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
-        jTFAutor = new javax.swing.JTextField();
-        jLabel9 = new javax.swing.JLabel();
-        jTFAnoPublicacao = new javax.swing.JTextField();
-        jBSalvar = new javax.swing.JButton();
+        jButtonPesquisar = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPaneReferencias = new javax.swing.JScrollPane();
+        jButtonAdicionar = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jRadioBasica = new javax.swing.JRadioButton();
+        jRadioComplementar = new javax.swing.JRadioButton();
+        jLabel4 = new javax.swing.JLabel();
+        jTextFieldAutor = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("Referências bibliográficas");
 
-        jLabel5.setText("Tipo");
-
         jLabel6.setText("Título:");
 
-        jLabel7.setText("Editora");
-
-        jLabel8.setText("Autor");
-
-        jLabel9.setText("Ano da publicação:");
-
-        jTFAnoPublicacao.addActionListener(new java.awt.event.ActionListener() {
+        jButtonPesquisar.setText("Pesquisar");
+        jButtonPesquisar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTFAnoPublicacaoActionPerformed(evt);
+                jButtonPesquisarActionPerformed(evt);
             }
         });
 
-        jBSalvar.setText("Salvar");
-        jBSalvar.addActionListener(new java.awt.event.ActionListener() {
+        jLabel2.setText("jLabel2");
+
+        jButtonAdicionar.setText("Adicionar");
+        jButtonAdicionar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBSalvarActionPerformed(evt);
+                jButtonAdicionarActionPerformed(evt);
             }
         });
+
+        jLabel3.setText("Tipo de Referência:");
+
+        jRadioBasica.setText("Básica");
+
+        jRadioComplementar.setText("Complementar");
+
+        jLabel4.setText("Autor");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(129, 129, 129)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(37, 37, 37)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(jLabel5)
-                                .addGap(18, 18, 18)
-                                .addComponent(jComboBoxTipoRef, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(30, 30, 30)
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTFEdicao, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jButtonAdicionar)
+                                .addGap(288, 288, 288))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel8)
-                                    .addComponent(jLabel6))
+                                    .addComponent(jLabel4)
+                                    .addComponent(jButtonPesquisar))
                                 .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTFTitulo)
-                                    .addComponent(jTFAutor)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(3, 3, 3)
-                                .addComponent(jLabel9)
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jBSalvar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jTFAnoPublicacao))))))
-                .addContainerGap(87, Short.MAX_VALUE))
+                                .addComponent(jTextFieldAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGap(245, 245, 245)
+                            .addComponent(jLabel1)
+                            .addGap(40, 40, 40)
+                            .addComponent(jLabel2))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(jScrollPaneReferencias, javax.swing.GroupLayout.PREFERRED_SIZE, 690, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(jLabel6)
+                            .addGap(18, 18, 18)
+                            .addComponent(jTFTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(16, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(150, 150, 150)
+                .addComponent(jLabel3)
+                .addGap(18, 18, 18)
+                .addComponent(jRadioBasica)
+                .addGap(93, 93, 93)
+                .addComponent(jRadioComplementar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jComboBoxTipoRef, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7)
-                    .addComponent(jTFEdicao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
+                .addGap(52, 52, 52)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTFTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(jTFAutor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(jTFAnoPublicacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel4)
+                    .addComponent(jTextFieldAutor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addComponent(jButtonPesquisar)
+                .addGap(26, 26, 26)
+                .addComponent(jScrollPaneReferencias, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34)
-                .addComponent(jBSalvar)
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jRadioBasica)
+                    .addComponent(jRadioComplementar)
+                    .addComponent(jLabel3))
+                .addGap(18, 18, 18)
+                .addComponent(jButtonAdicionar)
+                .addGap(56, 56, 56))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -270,34 +284,24 @@ public class Referencias extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jBSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSalvarActionPerformed
-
-        tipoRef = jCBtipoRef.getSelectedItem().toString();
-        titulo = jTTitulo.getText();
-        autor = jTAutor.getText();
-        edicao = jTEdicao.getText();
-        anoPublicacao = jTAnoPublicacao.getText();
-
-        
-        if (getIdRef() == 0) {
-            insert(gettR(), titulo, autor, edicao, anoPublicacao);
-            int opcao = JOptionPane.showConfirmDialog(this, "Deseja inserir a referencia bibliográfica?",
-                    "Atenção", JOptionPane.YES_NO_OPTION);
-            if (opcao == JOptionPane.YES_OPTION) {
+    private void jButtonAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdicionarActionPerformed
+        insert();
+        int opcao = JOptionPane.showConfirmDialog(this, "Deseja inserir outra referencia?",
+                "Atenção", JOptionPane.YES_NO_OPTION);
+        if (opcao == JOptionPane.YES_OPTION){
+            Referencias janela = new Referencias();
+            janela.setCodDisciplina(getCodDisciplina());
             this.dispose();
-            Referencias rf = new Referencias();
-            rf.setIdDisciplina(getIdDisciplina());
-            rf.setVisible(true);
-            }
-        } else {
-
-            update(gettR(), titulo, autor, edicao, anoPublicacao);
+            janela.setVisible(true);
         }
-    }//GEN-LAST:event_jBSalvarActionPerformed
+    }//GEN-LAST:event_jButtonAdicionarActionPerformed
 
-    private void jTFAnoPublicacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTFAnoPublicacaoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTFAnoPublicacaoActionPerformed
+    private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
+        for(int i = 0; i < modelo.getRowCount(); i++){
+            modelo.removeRow(i);
+        }
+        popularJTable();
+    }//GEN-LAST:event_jButtonPesquisarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -335,22 +339,19 @@ public class Referencias extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jBSalvar;
-    private javax.swing.JComboBox<String> jComboBoxTipoRef;
+    private javax.swing.JButton jButtonAdicionar;
+    private javax.swing.JButton jButtonPesquisar;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTFAnoPublicacao;
-    private javax.swing.JTextField jTFAutor;
-    private javax.swing.JTextField jTFEdicao;
+    private javax.swing.JRadioButton jRadioBasica;
+    private javax.swing.JRadioButton jRadioComplementar;
+    private javax.swing.JScrollPane jScrollPaneReferencias;
     private javax.swing.JTextField jTFTitulo;
+    private javax.swing.JTextField jTextFieldAutor;
     // End of variables declaration//GEN-END:variables
 
-    void setAnoPublicacao(int anoPulicacao) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }

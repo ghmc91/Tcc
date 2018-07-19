@@ -235,6 +235,7 @@ public class JFrameMain extends javax.swing.JFrame {
     private void jMenuPesquisarDisciplinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuPesquisarDisciplinaActionPerformed
         JFPesquisarDisciplina obj = new JFPesquisarDisciplina();
         obj.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jMenuPesquisarDisciplinaActionPerformed
 
     private void jMenuNovaMatrizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuNovaMatrizActionPerformed
@@ -418,8 +419,8 @@ public class JFrameMain extends javax.swing.JFrame {
         for (int i = 0; i < nList.getLength(); i++) {
             Node n = nList.item(i);
             String name = n.getNodeName();
-            if (name != null && name.equals(childName)) {
-                return n.getTextContent();
+            while (name != null && name.equals(childName)) {
+                return n.getTextContent() + " ";
             }
         }
         return "";

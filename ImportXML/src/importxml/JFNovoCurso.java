@@ -327,7 +327,7 @@ public class JFNovoCurso extends javax.swing.JFrame {
         jTFVagas.setText(getVagas());
 
         String queryUp = "UPDATE curso SET nomeCurso = '" + nomeCurso + "'"
-                + ", tipoCurso = '" + tipoCurso + ",' vagas = '" + getVagas() + "' WHERE idCurso = "
+                + ", tipoCurso = '" + tipoCurso + "', vagas = '" + getVagas() + "' WHERE idCurso = "
                 + "'" + getId() + "'";
 
         try {

@@ -26,7 +26,6 @@ public class JFPesquisarMatriz extends javax.swing.JFrame {
     DefaultTableModel modelo = new DefaultTableModel();
     JComboBox<String> jCTP, jCNC;
     int idCurso;
-    List<Object> idMatriz = new ArrayList<>();
     String nomeCurso, tipoCurso, anoInicio, anoFim, status;
     
     public String getStatus() {
@@ -81,28 +80,11 @@ public class JFPesquisarMatriz extends javax.swing.JFrame {
         this.nomeCurso = nomeCurso;
     }
     
-    public List<Object> getIdMatriz() {
-        Connection conn = new ConnectionFactory().getConnection();
-        String query = "SELECT idMatriz FROM Matriz WHERE idCurso = '" + getIdCurso() + "'";
-        try {
-            PreparedStatement stmt = conn.prepareStatement(query);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                idMatriz = (List<Object>) rs.getObject("idMatriz");
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return idMatriz;
-    }
     
-    public void setIdMatriz(List<Object> idMatriz) {
-        this.idMatriz = idMatriz;
-    }
     
     public int getIdCurso() {
         Connection conn = new ConnectionFactory().getConnection();
-        String query = "SELECT idCurso FROM Curso WHERE nomeCurso = '" + getNomeCurso() + "'";
+        String query = "SELECT idCurso FROM curso WHERE nomeCurso = '" + getNomeCurso() + "'";
         try {
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
@@ -144,7 +126,7 @@ public class JFPesquisarMatriz extends javax.swing.JFrame {
                 List<Object> idCurso = new ArrayList<>();
                 List<Object> nomeCurso = new ArrayList<>();
                 if (ie.getStateChange() == ItemEvent.SELECTED) {
-                    String sqlId = "SELECT idCurso FROM Curso WHERE tipoCurso = "
+                    String sqlId = "SELECT idCurso FROM curso WHERE tipoCurso = "
                             + "'" + ie.getItem().toString() + "'";
                     try {
                         PreparedStatement stmt = con.prepareStatement(sqlId);
@@ -194,8 +176,8 @@ public class JFPesquisarMatriz extends javax.swing.JFrame {
         
         String st = null;
         
-        String query = "SELECT anoInicio, anoFim, status FROM Matriz "
-                + "WHERE Curso_idCurso = '" + getIdCurso() + "'";
+        String query = "SELECT anoInicio, anoFim, status FROM matriz "
+                + "WHERE idCurso = '" + getIdCurso() + "'";
         try {
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
@@ -228,19 +210,12 @@ public class JFPesquisarMatriz extends javax.swing.JFrame {
         int idM = 0;
         int linha = table.getSelectedRow();
         String anoInicio = (String) table.getValueAt(linha, 1);
-        String query = "SELECT idMatriz FROM Matriz WHERE Curso_idCurso = " + getIdCurso() + ""
-             + " AND anoInicio = " + anoInicio + "";
+         
         try {
-            PreparedStatement stmt = conn.prepareStatement(query);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                idM = rs.getInt("idMatriz");
-            }
-            stmt.close();
             int opcao = JOptionPane.showConfirmDialog(this, "Tem certeza que deseja "
                     + "excluir a matriz?", "Atenção ", JOptionPane.YES_NO_OPTION);
-            String query2 = "DELETE FROM Matriz WHERE idMatriz = "
-                    + "'" + idM + "'";
+            String query2 = "DELETE FROM matriz WHERE anoInicio = " + anoInicio + " "
+                + "AND idCurso = " + getIdCurso() + "";
             if (opcao == JOptionPane.OK_OPTION) {
                 
                 PreparedStatement stmt2 = conn.prepareStatement(query2);
@@ -250,12 +225,14 @@ public class JFPesquisarMatriz extends javax.swing.JFrame {
                     table.setModel(modelo);
                     stmt2.close();
                     conn.close();
-                    JOptionPane.showMessageDialog(this, "Registro exluído com sucesso");
+                    JOptionPane.showMessageDialog(this, "Registro exlcuído com sucesso");
                 } else {
                     JOptionPane.showMessageDialog(this, "Impossível excluir");
                 }
             }
         } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Impossível excluir!"
+                    + "\nCertifique-se que não há disciplinas vinculadas a essa matriz.");
             ex.printStackTrace();
         }
     }
@@ -435,23 +412,10 @@ public class JFPesquisarMatriz extends javax.swing.JFrame {
         janela.jCTP.setSelectedItem(getTipoCurso());
         janela.jCNC.setSelectedItem(getNomeCurso());
         janela.anoI.setText(getAnoInicio());
+        janela.anoI.setEditable(false);
         janela.anoF.setText(getAnoFim());
         janela.jCSt.setSelectedItem(getStatus());
-        
-        int idMat = 0;
-        String query = "SELECT idMatriz FROM matriz WHERE Curso_idCurso = '" + getIdCurso() + "'"
-                + "AND anoInicio = '" + getAnoInicio() + "'";
-        try {
-            PreparedStatement stmt = conn.prepareStatement(query);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                idMat = rs.getInt("idMatriz");
-            }
-            
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        janela.setIdMatriz(idMat);
+        janela.setAnoInicio(getAnoInicio());
         janela.setVisible(true);
 
     }//GEN-LAST:event_jButtonAlterarActionPerformed

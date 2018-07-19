@@ -1,4 +1,3 @@
-
 package importxml;
 
 import java.awt.event.ItemEvent;
@@ -20,7 +19,7 @@ import javax.swing.JTextField;
  * @author Gustavo
  */
 public class JFNovaMatriz extends javax.swing.JFrame {
-    
+
     Connection con = new ConnectionFactory().getConnection();
     JComboBox<String> jCTP, jCNC, jCSt;
     String nomeCurso, anoInicio, anoFim;
@@ -34,34 +33,34 @@ public class JFNovaMatriz extends javax.swing.JFrame {
     public void setIdMatriz(int idMatriz) {
         this.idMatriz = idMatriz;
     }
-    
+
     public String getNomeCurso() {
         nomeCurso = jComboBoxNomeCurso.getSelectedItem().toString();
         return nomeCurso;
     }
-    
+
     public void setNomeCurso(String nomeCurso) {
         this.nomeCurso = nomeCurso;
     }
-    
+
     public String getAnoInicio() {
         anoInicio = jTFAnoInicio.getText();
         return anoInicio;
     }
-    
+
     public void setAnoInicio(String anoInicio) {
         this.anoInicio = anoInicio;
     }
-    
+
     public String getAnoFim() {
         anoFim = jTFAnoFim.getText();
         return anoFim;
     }
-    
+
     public void setAnoFim(String anoFim) {
         this.anoFim = anoFim;
     }
-    
+
     public int getStatus() {
         String st = jComboBoxStatus.getSelectedItem().toString();
         if (st.equals("Ativa")) {
@@ -71,14 +70,14 @@ public class JFNovaMatriz extends javax.swing.JFrame {
         }
         return status;
     }
-    
+
     public void setStatus(int status) {
         this.status = status;
     }
-    
+
     public int getIdCurso() {
         Connection con = new ConnectionFactory().getConnection();
-        String query = "SELECT idCurso FROM Curso WHERE nomeCurso = '" + getNomeCurso() + "'";
+        String query = "SELECT idCurso FROM curso WHERE nomeCurso = '" + getNomeCurso() + "'";
         try {
             PreparedStatement stmt = con.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
@@ -90,39 +89,38 @@ public class JFNovaMatriz extends javax.swing.JFrame {
         }
         return idCurso;
     }
-    
+
     public void setIdCurso(int idCurso) {
         this.idCurso = idCurso;
     }
-    
-        
+
     public JFNovaMatriz() {
         initComponents();
-        
+
         this.jCTP = jComboBoxTipoCurso;
         this.jCNC = jComboBoxNomeCurso;
         this.anoI = jTFAnoInicio;
         this.anoF = jTFAnoFim;
         this.jCSt = jComboBoxStatus;
-        
+
         this.jComboBoxTipoCurso.removeAllItems();
         this.jComboBoxTipoCurso.addItem("Selecione");
         this.jComboBoxTipoCurso.addItem("Técnico");
         this.jComboBoxTipoCurso.addItem("Superior");
         this.jComboBoxTipoCurso.addItem("Pós-Graduação");
         this.jComboBoxTipoCurso.addItem("Mestrado");
-        
+
         updateCombo();
-        
+
         this.jComboBoxNomeCurso.addItem("Selecione");
-        
+
         this.jComboBoxStatus.addItem("Ativa");
         this.jComboBoxStatus.addItem("Inativa");
-        
+
     }
-    
+
     void updateCombo() {
-        
+
         jComboBoxTipoCurso.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent ie) {
@@ -130,7 +128,7 @@ public class JFNovaMatriz extends javax.swing.JFrame {
                 List<Object> idCurso = new ArrayList<>();
                 List<Object> nomeCurso = new ArrayList<>();
                 if (ie.getStateChange() == ItemEvent.SELECTED) {
-                    String sqlId = "SELECT idCurso FROM Curso WHERE tipoCurso = "
+                    String sqlId = "SELECT idCurso FROM curso WHERE tipoCurso = "
                             + "'" + ie.getItem().toString() + "'";
                     try {
                         PreparedStatement stmt = con.prepareStatement(sqlId);
@@ -158,39 +156,39 @@ public class JFNovaMatriz extends javax.swing.JFrame {
                             }
                             jComboBoxNomeCurso.setModel(model);
                             stmtNC.close();
-                            
+
                         } catch (SQLException ex) {
                             ex.printStackTrace();
                         }
                     }
                 }
-                
+
             }
         });
     }
-    
+
     void insert(int idCurso, String anoInicio, String anoFim, int status) {
         Connection con = new ConnectionFactory().getConnection();
-        String query = "INSERT INTO Matriz (anoInicio, anoFim, Status, Curso_idCurso) VALUES("
+        String query = "INSERT INTO matriz (anoInicio, anoFim, status, idCurso) VALUES("
                 + "'" + anoInicio + "', '" + anoFim + "', '" + status + "', '" + idCurso + "')";
+
         try {
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.executeUpdate();
             stmt.close();
-            con.close();
             JOptionPane.showMessageDialog(this, "Registro salvo");
-            
+
         } catch (SQLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Erro");
         }
     }
-    
+
     void update(int idCurso, String anoInicio, String anoFim, int status) {
         Connection conn = new ConnectionFactory().getConnection();
-        String query = "UPDATE Matriz SET anoInicio = '" + anoInicio + "', anoFim = '" + anoFim + "', "
-                + "status = '" + status + "', Curso_idCurso = '" + idCurso + "' WHERE idMatriz = '"
-                + "" + getIdMatriz() + "'";
+        String query = "UPDATE matriz SET anoFim = '" + anoFim + "', "
+                + "status = '" + status + "',idCurso = '" + idCurso + "' WHERE anoInicio = '"
+                + "" + getAnoInicio() + "'";
         try {
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.executeUpdate();
@@ -200,7 +198,23 @@ public class JFNovaMatriz extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Erro");
         }
     }
-    
+
+    public int countForUp() {
+        int cont = 0;
+        String query = "SELECT count(*) AS cont FROM matriz WHERE idCurso = '" + getIdCurso() + "' "
+                + "AND anoInicio = '" + getAnoInicio() + "'";
+        try {
+            PreparedStatement stmt = con.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                cont = rs.getInt("cont");
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return cont;
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -366,12 +380,14 @@ public class JFNovaMatriz extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
-        if (getIdMatriz() == 0) {
+
+        if (countForUp() == 0) {
             insert(getIdCurso(), getAnoInicio(), getAnoFim(), getStatus());
+
         } else {
             update(getIdCurso(), getAnoInicio(), getAnoFim(), getStatus());
         }
+        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTFAnoInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTFAnoInicioActionPerformed

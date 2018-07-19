@@ -22,9 +22,9 @@ public class ConnectionFactory {
     
     public Connection getConnection(){
         
-        String url = "jdbc:mysql://localhost/tcc2";
+        String url = "jdbc:mysql://200.131.251.11:8090/tcc2";
         try {
-            return (Connection) DriverManager.getConnection(url,"root", "GUstavo08!");
+            return (Connection) DriverManager.getConnection(url,"gustavogti", "tcc2018");
         }catch(SQLException ex){
             System.out.println("Problemas na conexão " + ex.getMessage());
             return null;

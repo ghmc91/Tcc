@@ -26,8 +26,8 @@ public class JFPesquisarDisciplina extends javax.swing.JFrame {
     JTable table = new JTable();
     DefaultTableModel modelo = new DefaultTableModel();
     JComboBox<String> jCTC, jCNC;
-    int idCurso, idMatriz, idDisciplina;
-    String nomeCurso, anoInicio, nomeDisciplina, codigo, tipoCurso;
+    int idCurso;
+    String nomeCurso, anoInicio, nomeDisciplina, codigo, tipoCurso, periodo;
 
     public String getTipoCurso() {
         tipoCurso = jComboBoxTipoCurso.getSelectedItem().toString();
@@ -36,28 +36,6 @@ public class JFPesquisarDisciplina extends javax.swing.JFrame {
 
     public void setTipoCurso(String tipoCurso) {
         this.tipoCurso = tipoCurso;
-    }
-
-    public int getIdMatriz() {
-        Connection conn = new ConnectionFactory().getConnection();
-        String query = "SELECT idMatriz FROM Matriz WHERE Curso_idCurso = '" + getIdCurso() + "'"
-                + " AND anoInicio = '" + getAnoInicio() + "'";
-        try {
-            PreparedStatement stmt = conn.prepareStatement(query);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                idMatriz = rs.getInt("idMatriz");
-            }
-            stmt.close();
-            conn.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return idMatriz;
-    }
-
-    public void setIdMatriz(int idMatriz) {
-        this.idMatriz = idMatriz;
     }
 
     public String getCodigo() {
@@ -69,30 +47,6 @@ public class JFPesquisarDisciplina extends javax.swing.JFrame {
 
     public void setCodigo(String codigo) {
         this.codigo = codigo;
-    }
-
-    public int getIdDisciplina() {
-        Connection conn = new ConnectionFactory().getConnection();
-
-        String query = "SELECT idDisciplina FROM Disciplina WHERE Matriz = "
-                + "'" + getIdMatriz() + "'";
-        try {
-            PreparedStatement stmt = conn.prepareStatement(query);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                idDisciplina = rs.getInt("idDisciplina");
-            }
-            stmt.close();
-            conn.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return idDisciplina;
-
-    }
-
-    public void setIdDisciplina(int idDisciplina) {
-        this.idDisciplina = idDisciplina;
     }
 
     public String getNomeDisciplina() {
@@ -126,8 +80,7 @@ public class JFPesquisarDisciplina extends javax.swing.JFrame {
 
     public int getIdCurso() {
         try {
-            Connection conn = new ConnectionFactory().getConnection();
-            String query = "SELECT idCurso FROM Curso WHERE "
+            String query = "SELECT idCurso FROM curso WHERE "
                     + "nomeCurso = '" + getNomeCurso() + "'";
             PreparedStatement stmt = con.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
@@ -135,7 +88,6 @@ public class JFPesquisarDisciplina extends javax.swing.JFrame {
                 idCurso = rs.getInt("idCurso");
             }
             stmt.close();
-            conn.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -144,6 +96,45 @@ public class JFPesquisarDisciplina extends javax.swing.JFrame {
 
     public void setIdCurso(int idCurso) {
         this.idCurso = idCurso;
+    }
+
+    public String getPeriodo() {
+        int per = 0;
+        String query = "SELECT periodo FROM matriz_has_disciplina WHERE "
+                + "disciplina = '" + getCodigo() + "' AND matrizCurso = " + getIdCurso() + "";
+        try {
+            PreparedStatement stmt = con.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                per = rs.getInt("periodo");
+            }
+            if (per == 0) {
+                periodo = "Selecione";
+            } else if (per == 1) {
+                periodo = "1º";
+            } else if (per == 2) {
+                periodo = "2º";
+            } else if (per == 3) {
+                periodo = "3º";
+            } else if (per == 4) {
+                periodo = "4º";
+            } else if (per == 5) {
+                periodo = "5º";
+            } else if (per == 6) {
+                periodo = "6º";
+            } else if (per == 7) {
+                periodo = "7º";
+            } else if (per == 8) {
+                periodo = "8º";
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return periodo;
+    }
+
+    public void setPeriodo(String periodo) {
+        this.periodo = periodo;
     }
 
     public JFPesquisarDisciplina() {
@@ -172,7 +163,7 @@ public class JFPesquisarDisciplina extends javax.swing.JFrame {
                 List<Object> idCurso = new ArrayList<>();
                 List<Object> nomeCurso = new ArrayList<>();
                 if (ie.getStateChange() == ItemEvent.SELECTED) {
-                    String sqlId = "SELECT idCurso FROM Curso WHERE tipoCurso = "
+                    String sqlId = "SELECT idCurso FROM curso WHERE tipoCurso = "
                             + "'" + ie.getItem().toString() + "'";
                     try {
                         PreparedStatement stmt = con.prepareStatement(sqlId);
@@ -213,15 +204,14 @@ public class JFPesquisarDisciplina extends javax.swing.JFrame {
         jComboBoxNomeCurso.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent ie) {
-                Connection conn = new ConnectionFactory().getConnection();
                 jComboBoxAnoInicio.removeAllItems();
                 List<Object> anoI = new ArrayList<>();
                 if (ie.getStateChange() == ItemEvent.SELECTED) {
                     DefaultComboBoxModel model = new DefaultComboBoxModel();
-                    String query = "SELECT anoInicio FROM matriz WHERE Curso_idCurso = "
+                    String query = "SELECT anoInicio FROM matriz WHERE idCurso = "
                             + "" + getIdCurso() + "";
                     try {
-                        PreparedStatement stmt = conn.prepareStatement(query);
+                        PreparedStatement stmt = con.prepareStatement(query);
                         ResultSet rs = stmt.executeQuery();
                         while (rs.next()) {
                             anoI.add(rs.getInt("anoInicio"));
@@ -230,7 +220,6 @@ public class JFPesquisarDisciplina extends javax.swing.JFrame {
                             model.addElement(obj);
                         }
                         stmt.close();
-                        conn.close();
                         jComboBoxAnoInicio.setModel(model);
                     } catch (SQLException ex) {
                         ex.printStackTrace();
@@ -242,18 +231,18 @@ public class JFPesquisarDisciplina extends javax.swing.JFrame {
     }
 
     void popularJTable() {
-        Connection conn = new ConnectionFactory().getConnection();
+        
         modelo = (DefaultTableModel) table.getModel();
         modelo.addColumn("Curso");
         modelo.addColumn("anoInicio");
         modelo.addColumn("Nome");
         modelo.addColumn("Codigo");
 
-        String query = "SELECT nome, codDisciplina FROM Disciplina WHERE Matriz = '"
-                + "" + getIdMatriz() + "'";
-        
+        String query = "SELECT DISTINCT nome, codDisciplina FROM disciplina, matriz_has_disciplina WHERE matriz_has_disciplina.matrizAno = '"
+                + "" + getAnoInicio() + "' AND matriz_has_disciplina.matrizCurso = '" + getIdCurso() + "'";
+
         try {
-            PreparedStatement stmt = conn.prepareStatement(query);
+            PreparedStatement stmt = con.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 modelo.addRow(new Object[]{
@@ -266,8 +255,7 @@ public class JFPesquisarDisciplina extends javax.swing.JFrame {
             table.setModel(modelo);
             jScrollPaneDisciplina.setViewportView(table);
             stmt.close();
-            conn.close();
-
+            
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -275,23 +263,29 @@ public class JFPesquisarDisciplina extends javax.swing.JFrame {
 
     void excluirDisciplina() {
         Connection conn = new ConnectionFactory().getConnection();
-        int idD = 0;
+        String codD = null;
         int linha = table.getSelectedRow();
-        String query = "SELECT idDisciplina FROM Disciplina WHERE Matriz = '" + getIdMatriz() + "'"
+        String query = "SELECT codDisciplina FROM matriz_has_disciplina, disciplina WHERE matriz_has_disciplina.matrizAno"
+                + " = '" + getAnoInicio() + "'"
                 + "AND nome = '" + getNomeDisciplina() + "'";
         try {
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                idD = rs.getInt("idDisciplina");
+                codD = rs.getString("codDisciplina");
             }
             stmt.close();
             int opcao = JOptionPane.showConfirmDialog(this, "Tem certeza que deseja "
-                    + "excluir a disicplina?", "Atenção ", JOptionPane.YES_NO_OPTION);
-            String query2 = "DELETE FROM Disciplina WHERE idDisciplina = "
-                    + "'" + idD + "'";
+                    + "excluir a disicplina?\n"
+                    + "Isso acarretará na exclusão das referências \n"
+                    + "relacionadas a mesma.", "Atenção ", JOptionPane.YES_NO_OPTION);
+            String query3 = "DELETE FROM matriz_has_disciplina WHERE Disciplina = '" + codD + "'";
+            String query4 = "DELETE FROM disciplina_livros WHERE disciplina = '" + codD + "'";
+            String query2 = "DELETE FROM disciplina WHERE codDisciplina = "
+                    + "'" + codD + "'";
             if (opcao == JOptionPane.OK_OPTION) {
-
+                PreparedStatement stmt3 = conn.prepareStatement(query3);
+                stmt3.executeUpdate();
                 PreparedStatement stmt2 = conn.prepareStatement(query2);
                 int conseguiu_excluir = stmt2.executeUpdate();
                 if (conseguiu_excluir == 1) {
@@ -299,7 +293,7 @@ public class JFPesquisarDisciplina extends javax.swing.JFrame {
                     table.setModel(modelo);
                     stmt2.close();
                     conn.close();
-                    JOptionPane.showMessageDialog(this, "Registro exluído com sucesso");
+                    JOptionPane.showMessageDialog(this, "Registro exlcuído com sucesso");
                 } else {
                     JOptionPane.showMessageDialog(this, "Impossível excluir");
                 }
@@ -535,24 +529,28 @@ public class JFPesquisarDisciplina extends javax.swing.JFrame {
         janela.jCNC.setSelectedItem(getNomeCurso());
         janela.jTFND.setText(getNomeDisciplina());
         janela.jTFCod.setText(getCodigo());
+        janela.jTFCod.setEditable(false);
         janela.jCAI.getModel().setSelectedItem(getAnoInicio());
+        janela.jCBP.getModel().setSelectedItem(getPeriodo());
 
-        int idD = 0;
+        String codD = null;
         int linha = table.getSelectedRow();
-        String query = "SELECT idDisciplina FROM Disciplina WHERE Matriz = '" + getIdMatriz() + "'"
+        String query = "SELECT codDisciplina FROM matriz_has_disciplina, disciplina "
+                + "WHERE matriz_has_disciplina.matrizAno"
+                + " = '" + getAnoInicio() + "' "
                 + "AND nome = '" + getNomeDisciplina() + "'";
         try {
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                idD = rs.getInt("idDisciplina");
+                codD = rs.getString("codDisciplina");
             }
             stmt.close();
             conn.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        janela.setIdDisciplina(idD);
+        janela.setCodigo(codD);
         janela.setVisible(true);
     }//GEN-LAST:event_jButtonAlterarActionPerformed
 
@@ -564,22 +562,24 @@ public class JFPesquisarDisciplina extends javax.swing.JFrame {
         JFrameConsReferencias jFcons = new JFrameConsReferencias();
         int linha = table.getSelectedRow();
         String nomeD = (String) table.getValueAt(linha, 2);
-        int idD = 0;
-        String query = "SELECT idDisciplina FROM Disciplina WHERE nome = '" + nomeD + "'"
-                + "AND Matriz = '" + getIdMatriz() + "'";
+        String codD = null;
+        String query = "SELECT codDisciplina FROM disciplina, matriz_has_disciplina WHERE nome = '" + nomeD + "'"
+                + "AND matriz_has_disciplina.matrizAno = '" + getAnoInicio() + "'";
         try {
             PreparedStatement stmt = con.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
-            while(rs.next()){
-                idD = rs.getInt("idDisciplina");
+            while (rs.next()) {
+                codD = rs.getString("codDisciplina");
             }
         } catch (SQLException ex) {
             Logger.getLogger(JFPesquisarDisciplina.class.getName()).log(Level.SEVERE, null, ex);
         }
-        jFcons.setIdDisciplina(idD);
+
+        jFcons.setcodDisciplina(codD);
         jFcons.popularJtable();
         jFcons.setVisible(true);
- 
+        this.dispose();
+
     }//GEN-LAST:event_jButtonReferenciasActionPerformed
 
     private void jMenuItemImportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemImportarActionPerformed
@@ -588,7 +588,7 @@ public class JFPesquisarDisciplina extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemImportarActionPerformed
 
     private void jMenuNovoCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuNovoCursoActionPerformed
-       JFNovoCurso obj = new JFNovoCurso();
+        JFNovoCurso obj = new JFNovoCurso();
         obj.setVisible(true);
     }//GEN-LAST:event_jMenuNovoCursoActionPerformed
 
@@ -598,7 +598,7 @@ public class JFPesquisarDisciplina extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemPesquisarActionPerformed
 
     private void jMenuItemNovaMatrizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemNovaMatrizActionPerformed
-       JFNovaMatriz obj = null;
+        JFNovaMatriz obj = null;
         obj = new JFNovaMatriz();
         obj.setVisible(true);
     }//GEN-LAST:event_jMenuItemNovaMatrizActionPerformed

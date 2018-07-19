@@ -23,58 +23,85 @@ import javax.swing.table.DefaultTableModel;
  */
 public class JFrameConsReferencias extends javax.swing.JFrame {
 
+    Connection con = new ConnectionFactory().getConnection();
     private JTable table = new JTable();
     DefaultTableModel modelo = new DefaultTableModel();
-    String titulo;
-    int idDisciplina, idReferencia;
+    String codDisciplina, titulo;
+    int idReferencia, idCurso;
+    long idPHL;
 
-    public int getIdDisciplina() {
-        return idDisciplina;
+    public String getcodDisciplina() {
+        return codDisciplina;
     }
 
-    public void setIdDisciplina(int idDisciplina) {
-        this.idDisciplina = idDisciplina;
+    public void setcodDisciplina(String codDisciplina) {
+        this.codDisciplina = codDisciplina;
+    }
+
+    public int getIdCurso() {
+        String query = "SELECT matrizCurso FROM matriz_has_disciplina "
+                + "WHERE disciplina = '" + getcodDisciplina() + "'";
+        try {
+            PreparedStatement stmt = con.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                idCurso = rs.getInt("matrizCurso");
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return idCurso;
+    }
+
+    public void setIdCurso(int idCurso) {
+        this.idCurso = idCurso;
+    }
+
+    public long getIdPHL() {
+        return idPHL;
+    }
+
+    public void setIdPHL(long idPHL) {
+        this.idPHL = idPHL;
     }
 
     public JFrameConsReferencias() {
         initComponents();
-        
-        
-        
+
     }
-         
 
     void popularJtable() {
-        Connection conn = new ConnectionFactory().getConnection();
-
         modelo = (DefaultTableModel) table.getModel();
-        modelo.addColumn("idDisciplina");
-        modelo.addColumn("tipoReferencia");
-        modelo.addColumn("Titulo");
+        modelo.addColumn("Codigo");
+        modelo.addColumn("Disciplina");
+        modelo.addColumn("Descrição");
+        modelo.addColumn("Título");
         modelo.addColumn("Autor");
-        modelo.addColumn("Edicao");
-        modelo.addColumn("anoPublicacao");
+        modelo.addColumn("Nº de exemplares");
 
-        String sql = "SELECT Disciplina, tipoReferencia, Titulo, Autor, "
-                + "Editora, anoPublicacao FROM referencias_adotadas WHERE Disciplina = '"
-                + "" + idDisciplina + "'";
+        String query = "select d.codDisciplina, d.nome, t.descricao, c.titulo, c.autor, c.qtdEx, c.idPHL "
+                + "from disciplina as d, matriz_has_disciplina as m, disciplina_livros as dl, catalogo as c, tiporeferencia as t "
+                + "where matrizcurso = " + getIdCurso() + " and m.disciplina = d.codDisciplina and d.codDisciplina = dl.disciplina "
+                + "and  t.idTipoRef = dl.tipoReferencia and dl.livro = c.idPHL and d.codDisciplina = '"
+                + "" + getcodDisciplina() + "' order by nome, tipoReferencia";
         try {
-            PreparedStatement stmt = conn.prepareStatement(sql);
+            PreparedStatement stmt = con.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 modelo.addRow(new Object[]{
-                    rs.getString("Disciplina"),
-                    rs.getString("tipoReferencia"),
-                    rs.getString("Titulo"),
-                    rs.getString("Autor"),
-                    rs.getString("Editora"),
-                    rs.getString("anoPublicacao")
+                    rs.getString("d.codDisciplina"),
+                    rs.getString("d.nome"),
+                    rs.getString("t.descricao"),
+                    rs.getString("c.titulo"),
+                    rs.getString("c.autor"),
+                    rs.getInt("c.qtdEx")
                 });
+                setIdPHL(rs.getLong("c.idPHL"));
             }
             table.setModel(modelo);
             jScrollPaneReferencias.setViewportView(table);
             stmt.close();
-            conn.close();
+
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -88,7 +115,6 @@ public class JFrameConsReferencias extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
-        jButtonAlterar = new javax.swing.JButton();
         jButtonExcluir = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jScrollPaneReferencias = new javax.swing.JScrollPane();
@@ -108,13 +134,6 @@ public class JFrameConsReferencias extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jButtonAlterar.setText("Alterar");
-        jButtonAlterar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonAlterarActionPerformed(evt);
-            }
-        });
 
         jButtonExcluir.setText("Excluir");
         jButtonExcluir.addActionListener(new java.awt.event.ActionListener() {
@@ -137,22 +156,19 @@ public class JFrameConsReferencias extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(39, 39, 39)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPaneReferencias, javax.swing.GroupLayout.PREFERRED_SIZE, 583, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
+                        .addGap(168, 168, 168)
+                        .addComponent(jButtonAdicionar)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPaneReferencias, javax.swing.GroupLayout.PREFERRED_SIZE, 583, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(263, 263, 263)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jButtonAlterar)
-                                        .addGap(64, 64, 64)
-                                        .addComponent(jButtonExcluir))))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(161, 161, 161)
-                        .addComponent(jButtonAdicionar)))
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel1))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(91, 91, 91)
+                                .addComponent(jButtonExcluir)))))
                 .addContainerGap(39, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -162,7 +178,6 @@ public class JFrameConsReferencias extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonAlterar)
                     .addComponent(jButtonExcluir)
                     .addComponent(jButtonAdicionar))
                 .addGap(18, 18, 18)
@@ -186,61 +201,31 @@ public class JFrameConsReferencias extends javax.swing.JFrame {
 
     private void jButtonAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdicionarActionPerformed
         Referencias referencias = new Referencias();
-        referencias.setIdDisciplina(getIdDisciplina());
+        referencias.setCodDisciplina(getcodDisciplina());
         referencias.setVisible(true);
     }//GEN-LAST:event_jButtonAdicionarActionPerformed
 
-    private void jButtonAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAlterarActionPerformed
-        Connection conn = new ConnectionFactory().getConnection();
-        int linha = table.getSelectedRow();
-        String tipoRef = table.getValueAt(linha, 1).toString();
-        titulo = table.getValueAt(linha, 2).toString();
-        String autor = table.getValueAt(linha, 3).toString();
-        String edicao = table.getValueAt(linha, 4).toString();
-        String anoPulicacao = table.getValueAt(linha, 5).toString();
-        
-        String query = "SELECT idReferencia FROM referencias_adotadas "
-                + "WHERE Disciplina = " + getIdDisciplina() + " "
-                + "AND Titulo = '" + titulo + "'";
-        try {
-            PreparedStatement stmt = conn.prepareStatement(query);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                idReferencia = rs.getInt("idReferencia");
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(JFrameConsReferencias.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        Referencias referencias = new Referencias();
-        referencias.setIdDisciplina(getIdDisciplina());
-        referencias.setIdRef(idReferencia);
-        referencias.jCBtipoRef.setSelectedItem(tipoRef);
-        referencias.jTTitulo.setText(titulo);
-        referencias.jTAutor.setText(autor);
-        referencias.jTAnoPublicacao.setText(anoPulicacao);
-        referencias.setVisible(true);
-
-
-    }//GEN-LAST:event_jButtonAlterarActionPerformed
-
     private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
         Connection conn = new ConnectionFactory().getConnection();
+        long livro = 0;
         int linha = table.getSelectedRow();
-        titulo = table.getValueAt(linha, 2).toString();
-
-        String query = "SELECT idReferencia FROM referencias_adotadas "
-                + "WHERE Disciplina = " + getIdDisciplina() + " "
-                + "AND Titulo = '" + titulo + "'";
+        String titulo = table.getValueAt(linha, 3).toString();
+        String query1 = "SELECT livro, idPHL FROM disciplina_livros, catalogo WHERE disciplina "
+                + "= '" + getcodDisciplina() + "' AND titulo = '" + titulo + "' "
+                + "AND disciplina_livros.livro = catalogo.idPHL;";
         try {
-            PreparedStatement stmt = conn.prepareStatement(query);
+            PreparedStatement stmt = con.prepareStatement(query1);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                idReferencia = rs.getInt("idReferencia");
+                livro = rs.getLong("livro");
             }
+            stmt.close();
+            String query2 = "DELETE FROM disciplina_livros WHERE disciplina = '" + getcodDisciplina() + "' "
+                    + "AND livro = " + livro + "";
+
             int opcao = JOptionPane.showConfirmDialog(this, "Tem certeza que deseja "
-                    + "exluir a referência?", "Atenção", JOptionPane.YES_NO_OPTION);
-            String query2 = "DELETE FROM referencias_adotadas WHERE idReferencia = '" + idReferencia + "'";
+                    + "exlcuir a referência?", "Atenção", JOptionPane.YES_NO_OPTION);
+
             if (opcao == JOptionPane.OK_OPTION) {
                 PreparedStatement stmt1 = conn.prepareStatement(query2);
                 int conseguiu_excluir = stmt1.executeUpdate();
@@ -252,18 +237,18 @@ public class JFrameConsReferencias extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "Registro excluído com sucesso");
                 }
             }
-
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "Impossível excluir");
+            ex.printStackTrace();
         }
+    
     }//GEN-LAST:event_jButtonExcluirActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        
-        
+/**
+ * @param args the command line arguments
+ */
+public static void main(String args[]) {
+
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new JFrameConsReferencias().setVisible(true);
@@ -273,7 +258,6 @@ public class JFrameConsReferencias extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAdicionar;
-    private javax.swing.JButton jButtonAlterar;
     private javax.swing.JButton jButtonExcluir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

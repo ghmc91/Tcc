@@ -50,15 +50,13 @@ public class JFPesquisarCurso extends javax.swing.JFrame {
     public void setVagas(String vagas) {
         this.vagas = vagas;
     }
-    
-    
 
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
-        String query = "SELECT idCurso FROM Curso WHERE nomeCurso = "
+        String query = "SELECT idCurso FROM curso WHERE nomeCurso = "
                 + "' " + getNomeCurso() + " ' AND tipoCurso = "
                 + "' " + getTipoCurso() + " '";
         try {
@@ -120,7 +118,7 @@ public class JFPesquisarCurso extends javax.swing.JFrame {
             while (rs.next()) {
                 modelo.addRow(new Object[]{
                     rs.getString("tipoCurso"),
-                    rs.getString("nomeCurso"), 
+                    rs.getString("nomeCurso"),
                     rs.getString("Vagas")
                 });
             }
@@ -140,7 +138,7 @@ public class JFPesquisarCurso extends javax.swing.JFrame {
         tipoCurso = table.getValueAt(linha, 0).toString();
         nomeCurso = table.getValueAt(linha, 1).toString();
 
-        String query = "SELECT idCurso FROM Curso WHERE nomeCurso = "
+        String query = "SELECT idCurso FROM curso WHERE nomeCurso = "
                 + "'" + nomeCurso + "' AND tipoCurso = "
                 + "'" + tipoCurso + "'";
         try {
@@ -152,27 +150,26 @@ public class JFPesquisarCurso extends javax.swing.JFrame {
             stmt.close();
             int opcao = JOptionPane.showConfirmDialog(this, "Tem certeza que deseja "
                     + "exluir o curso?", "Atenção ", JOptionPane.YES_NO_OPTION);
-            
-            String sql = "DELETE FROM Curso WHERE idCurso = "
-                        + "'" + id + "'";
+
+            String sql = "DELETE FROM curso WHERE idCurso = "
+                    + "'" + id + "'";
             if (opcao == JOptionPane.OK_OPTION) {
-              
+
                 PreparedStatement stmt1 = conn.prepareStatement(sql);
-                int conseguiu_excluir =  stmt1.executeUpdate();
+                int conseguiu_excluir = stmt1.executeUpdate();
                 if (conseguiu_excluir == 1) {
                     modelo.removeRow(linha);
                     table.setModel(modelo);
                     stmt1.close();
                     conn.close();
                     JOptionPane.showMessageDialog(this, "Registro exluído com sucesso");
-                } else {
-                    JOptionPane.showMessageDialog(this, "Impossível excluir");
                 }
-
             } else {
                 this.dispose();
             }
         } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Impossível excluir!\n Certifique-se que não há"
+                    + " matrizes e disciplinas vinculadas a esse curso!");
             ex.printStackTrace();
         }
     }
@@ -382,7 +379,7 @@ public class JFPesquisarCurso extends javax.swing.JFrame {
 
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
 
-        String sql = "SELECT tipoCurso, nomeCurso, vagas FROM Curso WHERE tipoCurso = '"
+        String sql = "SELECT tipoCurso, nomeCurso, vagas FROM curso WHERE tipoCurso = '"
                 + jComboBoxTipoCurso.getSelectedItem().toString() + "'";
         popularJtable(sql);
 
@@ -395,9 +392,8 @@ public class JFPesquisarCurso extends javax.swing.JFrame {
         janela.jTxt1.setText(getNomeCurso());
         janela.jCbx1.setSelectedItem(getTipoCurso());
         janela.jTFV.setText(getVagas());
-        
-        
-        String query = "SELECT idCurso FROM Curso WHERE nomeCurso = "
+
+        String query = "SELECT idCurso FROM curso WHERE nomeCurso = "
                 + "'" + getNomeCurso() + "' AND tipoCurso = "
                 + "'" + getTipoCurso() + "'";
         int idx = 0;
