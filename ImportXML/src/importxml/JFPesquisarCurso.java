@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package importxml;
 
 import com.mysql.jdbc.Connection;
@@ -32,6 +27,7 @@ import javax.swing.table.TableModel;
  */
 public class JFPesquisarCurso extends javax.swing.JFrame {
 
+    //Declaração de variáveis
     Connection con = new ConnectionFactory().getConnection();
     JTable table = new JTable();
     DefaultTableModel modelo = new DefaultTableModel();
@@ -40,6 +36,7 @@ public class JFPesquisarCurso extends javax.swing.JFrame {
     String nomeCurso = "", vagas = "";
     int id = 0;
 
+    //Métodos Getters e Setters
     public String getVagas() {
         for (int i = 0; i <= table.getSelectedRow(); i++) {
             vagas = (String) table.getValueAt(i, 2);
@@ -93,6 +90,7 @@ public class JFPesquisarCurso extends javax.swing.JFrame {
         this.nomeCurso = nomeCurso;
     }
 
+    //Método Construtor
     public JFPesquisarCurso() {
         initComponents();
         this.jComboBoxTipoCurso.removeAllItems();
@@ -102,76 +100,6 @@ public class JFPesquisarCurso extends javax.swing.JFrame {
         this.jComboBoxTipoCurso.addItem("Pós-Graduação");
         this.jComboBoxTipoCurso.addItem("Mestrado");
 
-    }
-
-    public void popularJtable(String sql) {
-
-        try {
-
-            PreparedStatement stmt = con.prepareStatement(sql);
-            ResultSet rs = stmt.executeQuery(sql);
-            modelo = (DefaultTableModel) table.getModel();
-            modelo.addColumn("tipoCurso");
-            modelo.addColumn("nomeCurso");
-            modelo.addColumn("Vagas");
-
-            while (rs.next()) {
-                modelo.addRow(new Object[]{
-                    rs.getString("tipoCurso"),
-                    rs.getString("nomeCurso"),
-                    rs.getString("Vagas")
-                });
-            }
-            table.setModel(modelo);
-            jScrollPaneCursos.setViewportView(table);
-            stmt.close();
-            //con.close();
-
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    void excluirCurso() {
-        Connection conn = new ConnectionFactory().getConnection();
-        int linha = table.getSelectedRow();
-        tipoCurso = table.getValueAt(linha, 0).toString();
-        nomeCurso = table.getValueAt(linha, 1).toString();
-
-        String query = "SELECT idCurso FROM curso WHERE nomeCurso = "
-                + "'" + nomeCurso + "' AND tipoCurso = "
-                + "'" + tipoCurso + "'";
-        try {
-            PreparedStatement stmt = conn.prepareStatement(query);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                id = rs.getInt("idCurso");
-            }
-            stmt.close();
-            int opcao = JOptionPane.showConfirmDialog(this, "Tem certeza que deseja "
-                    + "exluir o curso?", "Atenção ", JOptionPane.YES_NO_OPTION);
-
-            String sql = "DELETE FROM curso WHERE idCurso = "
-                    + "'" + id + "'";
-            if (opcao == JOptionPane.OK_OPTION) {
-
-                PreparedStatement stmt1 = conn.prepareStatement(sql);
-                int conseguiu_excluir = stmt1.executeUpdate();
-                if (conseguiu_excluir == 1) {
-                    modelo.removeRow(linha);
-                    table.setModel(modelo);
-                    stmt1.close();
-                    conn.close();
-                    JOptionPane.showMessageDialog(this, "Registro exluído com sucesso");
-                }
-            } else {
-                this.dispose();
-            }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Impossível excluir!\n Certifique-se que não há"
-                    + " matrizes e disciplinas vinculadas a esse curso!");
-            ex.printStackTrace();
-        }
     }
 
     @SuppressWarnings("unchecked")
@@ -192,12 +120,12 @@ public class JFPesquisarCurso extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuCurso = new javax.swing.JMenu();
         jMenuPrincipal = new javax.swing.JMenuItem();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuNovaDisiciplina = new javax.swing.JMenuItem();
-        jMenuPesquisarDisciplina = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuNovaMatriz = new javax.swing.JMenuItem();
         jMenuPesquisarMatriz = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuNovaDisiciplina = new javax.swing.JMenuItem();
+        jMenuPesquisarDisciplina = new javax.swing.JMenuItem();
 
         jButtonAlterarCurso.setText("Alterar");
         jButtonAlterarCurso.addActionListener(new java.awt.event.ActionListener() {
@@ -208,12 +136,15 @@ public class JFPesquisarCurso extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jLabel1.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jLabel1.setText("-- Cursos -- ");
 
+        jLabel2.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jLabel2.setText("Tipo de Curso:");
 
         jComboBoxTipoCurso.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        jButtonExcluirCurso.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jButtonExcluirCurso.setText("Excluir");
         jButtonExcluirCurso.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -221,6 +152,7 @@ public class JFPesquisarCurso extends javax.swing.JFrame {
             }
         });
 
+        jButtonPesquisar.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jButtonPesquisar.setText("Pesquisar");
         jButtonPesquisar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -228,6 +160,7 @@ public class JFPesquisarCurso extends javax.swing.JFrame {
             }
         });
 
+        jButtonAlterar.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jButtonAlterar.setText("Alterar");
         jButtonAlterar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -246,26 +179,6 @@ public class JFPesquisarCurso extends javax.swing.JFrame {
         jMenuCurso.add(jMenuPrincipal);
 
         jMenuBar1.add(jMenuCurso);
-
-        jMenu1.setText("Disciplina");
-
-        jMenuNovaDisiciplina.setText("Novo...");
-        jMenuNovaDisiciplina.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuNovaDisiciplinaActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuNovaDisiciplina);
-
-        jMenuPesquisarDisciplina.setText("Pesquisar...");
-        jMenuPesquisarDisciplina.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuPesquisarDisciplinaActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuPesquisarDisciplina);
-
-        jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Matriz");
 
@@ -287,36 +200,53 @@ public class JFPesquisarCurso extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
+        jMenu1.setText("Disciplina");
+
+        jMenuNovaDisiciplina.setText("Novo...");
+        jMenuNovaDisiciplina.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuNovaDisiciplinaActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuNovaDisiciplina);
+
+        jMenuPesquisarDisciplina.setText("Pesquisar...");
+        jMenuPesquisarDisciplina.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuPesquisarDisciplinaActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuPesquisarDisciplina);
+
+        jMenuBar1.add(jMenu1);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jComboBoxTipoCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButtonPesquisar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButtonAlterar)
-                        .addGap(166, 166, 166)
-                        .addComponent(jButtonExcluirCurso)))
-                .addGap(174, 174, 174))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(40, 40, 40)
-                        .addComponent(jScrollPaneCursos, javax.swing.GroupLayout.PREFERRED_SIZE, 558, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(140, 140, 140)
+                        .addComponent(jButtonAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
+                        .addComponent(jButtonExcluirCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(158, 158, 158)
-                        .addComponent(jLabel2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(287, 287, 287)
-                        .addComponent(jLabel1)))
-                .addContainerGap(40, Short.MAX_VALUE))
+                        .addGap(75, 75, 75)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPaneCursos, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel1)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addGap(25, 25, 25)
+                                        .addComponent(jComboBoxTipoCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(36, 36, 36)
+                                .addComponent(jButtonPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -327,22 +257,25 @@ public class JFPesquisarCurso extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jComboBoxTipoCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonPesquisar))
+                    .addComponent(jButtonPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonExcluirCurso)
-                    .addComponent(jButtonAlterar))
+                    .addComponent(jButtonExcluirCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPaneCursos, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Opções da barra de menus: Importar(Importar) Matriz(Nova Matriz e
+     * Pesquisar Matriz) Disciplina(Nova Disciplina e Pesquisar)
+     */
     private void jMenuPrincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuPrincipalActionPerformed
-        JFNovoCurso obj = new JFNovoCurso();
-        obj.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jMenuPrincipalActionPerformed
 
     private void jMenuNovaDisiciplinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuNovaDisiciplinaActionPerformed
@@ -363,7 +296,6 @@ public class JFPesquisarCurso extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuNovaMatrizActionPerformed
 
     private void jMenuPesquisarMatrizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuPesquisarMatrizActionPerformed
-
         JFPesquisarMatriz obj = new JFPesquisarMatriz();
         obj.setVisible(true);
     }//GEN-LAST:event_jMenuPesquisarMatrizActionPerformed
@@ -371,46 +303,30 @@ public class JFPesquisarCurso extends javax.swing.JFrame {
     private void jButtonAlterarCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAlterarCursoActionPerformed
 
     }//GEN-LAST:event_jButtonAlterarCursoActionPerformed
-
+    /**
+     * Botão excluir; Chama a função excluirCurso 
+     */
     private void jButtonExcluirCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirCursoActionPerformed
-
         excluirCurso();
     }//GEN-LAST:event_jButtonExcluirCursoActionPerformed
-
+    /**
+     * Botão pesquisar; cria uma consulta sql e chama
+     * a função popularJtable passando como parâmetro essa consulta
+     * que servirá para popular a JTable
+     */
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
-
         String sql = "SELECT tipoCurso, nomeCurso, vagas FROM curso WHERE tipoCurso = '"
                 + jComboBoxTipoCurso.getSelectedItem().toString() + "'";
         popularJtable(sql);
 
     }//GEN-LAST:event_jButtonPesquisarActionPerformed
-
+    /**
+     * Botão para alterar cursos; Chama a função alterar curso e fecha esse
+     * frame
+     */
     private void jButtonAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAlterarActionPerformed
-        Connection conn = new ConnectionFactory().getConnection();
-        JFNovoCurso janela = new JFNovoCurso();
-
-        janela.jTxt1.setText(getNomeCurso());
-        janela.jCbx1.setSelectedItem(getTipoCurso());
-        janela.jTFV.setText(getVagas());
-
-        String query = "SELECT idCurso FROM curso WHERE nomeCurso = "
-                + "'" + getNomeCurso() + "' AND tipoCurso = "
-                + "'" + getTipoCurso() + "'";
-        int idx = 0;
-        try {
-            PreparedStatement stmt = conn.prepareStatement(query);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                idx = rs.getInt("idCurso");
-            }
-            stmt.close();
-            conn.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-
-        janela.setId(idx);
-        janela.setVisible(true);
+        alterarCurso();
+        this.dispose();
     }//GEN-LAST:event_jButtonAlterarActionPerformed
 
     public static void main(String args[]) {
@@ -469,4 +385,124 @@ public class JFPesquisarCurso extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPaneCursos;
     private javax.persistence.EntityManager tccPUEntityManager;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * Popula a JTable com o retorno da consulta passada pelo parâmtero sql
+     * @param sql = consulta que retorna as colunas tipoCurso, nomeCurso e vagas
+     */
+    public void popularJtable(String sql) {
+
+        try {
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery(sql);
+            modelo = (DefaultTableModel) table.getModel();
+            modelo.addColumn("Tipo de Curso");
+            modelo.addColumn("Nome do Curso");
+            modelo.addColumn("Vagas");
+
+            while (rs.next()) {
+                modelo.addRow(new Object[]{
+                    rs.getString("tipoCurso"),
+                    rs.getString("nomeCurso"),
+                    rs.getString("Vagas")
+                });
+            }
+            table.setModel(modelo);
+            table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+            table.getColumnModel().getColumn(0).setPreferredWidth(90);
+            table.getColumnModel().getColumn(1).setPreferredWidth(215);
+            table.getColumnModel().getColumn(2).setPreferredWidth(43);
+            jScrollPaneCursos.setViewportView(table);
+            stmt.close();
+            //con.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * Função para alterar o curso selecionado na JTable Seleciona o idCurso da
+     * linha selecionado e direciona para o frame JFNovoCurso para o usuário
+     * modificar o que achar necessário.
+     */
+    void alterarCurso() {
+        Connection conn = new ConnectionFactory().getConnection();
+        JFNovoCurso janela = new JFNovoCurso();
+
+        janela.jTxt1.setText(getNomeCurso());
+        janela.jCbx1.setSelectedItem(getTipoCurso());
+        janela.jTFV.setText(getVagas());
+
+        String query = "SELECT idCurso FROM curso WHERE nomeCurso = "
+                + "'" + getNomeCurso() + "' AND tipoCurso = "
+                + "'" + getTipoCurso() + "'";
+        int idx = 0;
+        try {
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                idx = rs.getInt("idCurso");
+            }
+            stmt.close();
+            conn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        janela.setId(idx);
+        janela.setVisible(true);
+        janela.jLB.setText("Atualizando Curso");
+        janela.jButton.setText("Atualizar");
+    }
+
+    /**
+     * Função para excluir dados da tabela curso; Seleciona o id do Curso da
+     * lina selecionada e apaga o registro na tabela e na JTable
+     */
+    void excluirCurso() {
+        Connection conn = new ConnectionFactory().getConnection();
+        int linha = table.getSelectedRow();
+        tipoCurso = table.getValueAt(linha, 0).toString();
+        nomeCurso = table.getValueAt(linha, 1).toString();
+
+        String query = "SELECT idCurso FROM curso WHERE nomeCurso = "
+                + "'" + nomeCurso + "' AND tipoCurso = "
+                + "'" + tipoCurso + "'";
+        try {
+            PreparedStatement stmt = conn.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                id = rs.getInt("idCurso");
+            }
+            stmt.close();
+            int opcao = JOptionPane.showConfirmDialog(this, "Tem certeza que deseja "
+                    + "exluir o curso?", "Atenção ", JOptionPane.YES_NO_OPTION);
+
+            String sql = "DELETE FROM curso WHERE idCurso = "
+                    + "'" + id + "'";
+            if (opcao == JOptionPane.OK_OPTION) {
+
+                PreparedStatement stmt1 = conn.prepareStatement(sql);
+                int conseguiu_excluir = stmt1.executeUpdate();
+                if (conseguiu_excluir == 1) {
+                    modelo.removeRow(linha);
+                    table.setModel(modelo);
+                    stmt1.close();
+                    conn.close();
+                    JOptionPane.showMessageDialog(this, "Registro excluído com sucesso");
+
+                }
+            } else {
+                this.dispose();
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Impossível excluir!\n Certifique-se que não há"
+                    + " matrizes e disciplinas vinculadas a esse curso!");
+            this.dispose();
+            ex.printStackTrace();
+        }
+    }
+
 }

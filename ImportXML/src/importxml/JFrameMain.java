@@ -38,7 +38,8 @@ public class JFrameMain extends javax.swing.JFrame {
     //Declaração das variaveis de classe
     private File xmlFile;
     private File arquivoEscolhido;
-
+    
+    //Método Construtor
     public JFrameMain() {
         initComponents();
     }
@@ -64,12 +65,14 @@ public class JFrameMain extends javax.swing.JFrame {
         jMenuCurso = new javax.swing.JMenu();
         jMenuNovoCurso = new javax.swing.JMenuItem();
         jMenPesquisarCurso = new javax.swing.JMenuItem();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuNovaDisiciplina = new javax.swing.JMenuItem();
-        jMenuPesquisarDisciplina = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuNovaMatriz = new javax.swing.JMenuItem();
         jMenuPesquisarMatriz = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuNovaDisiciplina = new javax.swing.JMenuItem();
+        jMenuPesquisarDisciplina = new javax.swing.JMenuItem();
+        jMenu7 = new javax.swing.JMenu();
+        jMenuItemRelatorio = new javax.swing.JMenuItem();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -128,6 +131,26 @@ public class JFrameMain extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenuCurso);
 
+        jMenu2.setText("Matriz");
+
+        jMenuNovaMatriz.setText("Novo...");
+        jMenuNovaMatriz.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuNovaMatrizActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuNovaMatriz);
+
+        jMenuPesquisarMatriz.setText("Pesquisar");
+        jMenuPesquisarMatriz.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuPesquisarMatrizActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuPesquisarMatriz);
+
+        jMenuBar1.add(jMenu2);
+
         jMenu1.setText("Disciplina");
 
         jMenuNovaDisiciplina.setText("Novo...");
@@ -148,25 +171,17 @@ public class JFrameMain extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Matriz");
+        jMenu7.setText("Relatórios");
 
-        jMenuNovaMatriz.setText("Novo...");
-        jMenuNovaMatriz.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItemRelatorio.setText("Gerar Relatório");
+        jMenuItemRelatorio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuNovaMatrizActionPerformed(evt);
+                jMenuItemRelatorioActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuNovaMatriz);
+        jMenu7.add(jMenuItemRelatorio);
 
-        jMenuPesquisarMatriz.setText("Pesquisar");
-        jMenuPesquisarMatriz.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuPesquisarMatrizActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuPesquisarMatriz);
-
-        jMenuBar1.add(jMenu2);
+        jMenuBar1.add(jMenu7);
 
         setJMenuBar(jMenuBar1);
 
@@ -207,18 +222,24 @@ public class JFrameMain extends javax.swing.JFrame {
      */
     private void jButtonProcurarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonProcurarActionPerformed
         arquivoEscolhido = buscarJFileChooser();
-
     }//GEN-LAST:event_jButtonProcurarActionPerformed
 
-    //    
+    /**
+     * Botão chama a função para inserir dados na tabela catalogo
+     */
+
     private void jButtonImportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonImportarActionPerformed
         inserirDados(xmlFile);
     }//GEN-LAST:event_jButtonImportarActionPerformed
 
+    /**
+     * Opções da barra de menus: Curso(Novo Curso e Pesquisar) Matriz(Nova
+     * Matriz e Pesquisar Matriz) Disciplina(Nova Disciplina e Pesquisar)
+     * Relatório (Gerar Relatório)
+     */
     private void jMenuNovoCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuNovoCursoActionPerformed
         JFNovoCurso obj = new JFNovoCurso();
         obj.setVisible(true);
-
     }//GEN-LAST:event_jMenuNovoCursoActionPerformed
 
     private void jMenPesquisarCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenPesquisarCursoActionPerformed
@@ -235,7 +256,7 @@ public class JFrameMain extends javax.swing.JFrame {
     private void jMenuPesquisarDisciplinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuPesquisarDisciplinaActionPerformed
         JFPesquisarDisciplina obj = new JFPesquisarDisciplina();
         obj.setVisible(true);
-        this.dispose();
+
     }//GEN-LAST:event_jMenuPesquisarDisciplinaActionPerformed
 
     private void jMenuNovaMatrizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuNovaMatrizActionPerformed
@@ -248,6 +269,11 @@ public class JFrameMain extends javax.swing.JFrame {
         JFPesquisarMatriz obj = new JFPesquisarMatriz();
         obj.setVisible(true);
     }//GEN-LAST:event_jMenuPesquisarMatrizActionPerformed
+
+    private void jMenuItemRelatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRelatorioActionPerformed
+        JFRelatorio obj = new JFRelatorio();
+        obj.setVisible(true);
+    }//GEN-LAST:event_jMenuItemRelatorioActionPerformed
 
     public static void main(String args[]) {
 
@@ -271,11 +297,13 @@ public class JFrameMain extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
+    private javax.swing.JMenu jMenu7;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenu jMenuCurso;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItemRelatorio;
     private javax.swing.JMenuItem jMenuNovaDisiciplina;
     private javax.swing.JMenuItem jMenuNovaMatriz;
     private javax.swing.JMenuItem jMenuNovoCurso;
@@ -351,23 +379,20 @@ public class JFrameMain extends javax.swing.JFrame {
              */
             // Lista de nós reconhecidos pela tag 'rec'
             NodeList nList = doc.getElementsByTagName("rec");
-            
 
             /**
              * loop para extrair os titulos dos livros que estão contidos no
              * elemento filho especificado no segundo parâmetro da função
              * getTextContent (abaixo da função principal) e inserir os dados na
-             * coluna titulo da tabela catalgo isbn, titulo, autor, edicao,
-             * anoPublicacao, editora, qtdEx
+             * coluna titulo da tabela catalgo idPHL, isbn, titulo, autor,
+             * edicao, anoPublicacao, editora, qtdEx
              */
             for (int i = 0; i < nList.getLength(); i++) {
                 Node node = nList.item(i);
                 List<Object> columns = null;
 
-                //TODO: Celso
-                //Tem que realizar uma conta do número de exemplares, com base no v007
-                columns = Arrays //v69 ISBN e v002 é id do 
-                        .asList(getTextContent(node, "v002"), //TODO: Celso - não é o ISBN resolver!!!
+                columns = Arrays
+                        .asList(getTextContent(node, "v002"),
                                 getTextContent(node, "v069"),
                                 getTextContent(node, "v018"),
                                 getTextContent(node, "v016"),
@@ -427,6 +452,7 @@ public class JFrameMain extends javax.swing.JFrame {
 
     }
 
+    //Função para contar a quantida de exemplares
     private static int getCount(Node parentNode) {
         int qtdEx = 0;
         NodeList nList = parentNode.getChildNodes();

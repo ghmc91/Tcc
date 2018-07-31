@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
@@ -21,12 +23,16 @@ import javax.swing.JTextField;
  */
 public class JFNovaDisciplina extends javax.swing.JFrame {
 
+    //Declaração de variáveis
     Connection con = new ConnectionFactory().getConnection();
     JComboBox<String> jCTC, jCNC, jCAI, jCBP;
+    JButton jBAt;
+    JLabel jL7;
     JTextField jTFND, jTFCod;
     String nomeCurso, codigo, anoInicio, nomeDisciplina;
     int idCurso, periodo;
 
+    //Métodos Getters e Setter
     public String getAnoInicio() {
         anoInicio = jComboBoxAnoInicio.getSelectedItem().toString();
         return anoInicio;
@@ -113,6 +119,7 @@ public class JFNovaDisciplina extends javax.swing.JFrame {
         this.periodo = periodo;
     }
 
+    //Método Construtor
     public JFNovaDisciplina() {
         initComponents();
         this.jCTC = jComboBoxTipoCurso;
@@ -121,7 +128,9 @@ public class JFNovaDisciplina extends javax.swing.JFrame {
         this.jTFND = jTFNomeDisciplina;
         this.jTFCod = jTFCodigo;
         this.jCBP = jComboBoxPeriodo;
-
+        this.jL7 = jLabel7;
+        this.jBAt = jButtonSalvar;
+        
         this.jComboBoxTipoCurso.addItem("Selecione");
         this.jComboBoxTipoCurso.addItem("Técnico");
         this.jComboBoxTipoCurso.addItem("Superior");
@@ -132,13 +141,330 @@ public class JFNovaDisciplina extends javax.swing.JFrame {
 
     }
 
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jLabel8 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jComboBoxTipoCurso = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        jComboBoxNomeCurso = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
+        jComboBoxAnoInicio = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        jTFNomeDisciplina = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jButtonSalvar = new javax.swing.JButton();
+        jTFCodigo = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jComboBoxPeriodo = new javax.swing.JComboBox<>();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenuImportar = new javax.swing.JMenu();
+        jMenuItemImportar = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItemNovoCurso = new javax.swing.JMenuItem();
+        jMenuItemPesquisar = new javax.swing.JMenuItem();
+        jMenu5 = new javax.swing.JMenu();
+        jMenuItemNovaMatriz = new javax.swing.JMenuItem();
+        jMenuItemPesquisarMatriz = new javax.swing.JMenuItem();
+
+        jLabel8.setText("jLabel8");
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jLabel1.setText("Tipo de curso: ");
+
+        jComboBoxTipoCurso.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione" }));
+
+        jLabel2.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jLabel2.setText("Curso:");
+
+        jComboBoxNomeCurso.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione" }));
+
+        jLabel3.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jLabel3.setText("Ano início da Matriz: ");
+
+        jComboBoxAnoInicio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione" }));
+
+        jLabel4.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jLabel4.setText("Nome:");
+
+        jLabel5.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jLabel5.setText("Código: ");
+
+        jButtonSalvar.setText("Salvar");
+        jButtonSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSalvarActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jLabel7.setText("Nova disciplina");
+
+        jLabel6.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jLabel6.setText("Período: ");
+
+        jComboBoxPeriodo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "1º", "2º", "3º", "4º", "5º", "6º", "7º", "8º" }));
+
+        jMenuImportar.setText("Importar");
+
+        jMenuItemImportar.setText("Importar");
+        jMenuItemImportar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemImportarActionPerformed(evt);
+            }
+        });
+        jMenuImportar.add(jMenuItemImportar);
+
+        jMenuBar1.add(jMenuImportar);
+
+        jMenu2.setText("Curso");
+
+        jMenuItemNovoCurso.setText("Novo Curso");
+        jMenuItemNovoCurso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemNovoCursoActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItemNovoCurso);
+
+        jMenuItemPesquisar.setText("Pesquisar...");
+        jMenuItemPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemPesquisarActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItemPesquisar);
+
+        jMenuBar1.add(jMenu2);
+
+        jMenu5.setText("Matriz");
+
+        jMenuItemNovaMatriz.setText("Nova Matriz");
+        jMenuItemNovaMatriz.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemNovaMatrizActionPerformed(evt);
+            }
+        });
+        jMenu5.add(jMenuItemNovaMatriz);
+
+        jMenuItemPesquisarMatriz.setText("Pesquisar...");
+        jMenuItemPesquisarMatriz.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemPesquisarMatrizActionPerformed(evt);
+            }
+        });
+        jMenu5.add(jMenuItemPesquisarMatriz);
+
+        jMenuBar1.add(jMenu5);
+
+        setJMenuBar(jMenuBar1);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(48, 48, 48)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(jComboBoxTipoCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel3))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboBoxAnoInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTFNomeDisciplina, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel6))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTFCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxNomeCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(38, 38, 38))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addGap(309, 309, 309))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jButtonSalvar)
+                        .addGap(308, 308, 308))))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(jLabel7)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboBoxTipoCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(32, 32, 32)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(jTFNomeDisciplina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(41, 41, 41)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jComboBoxAnoInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(jComboBoxNomeCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(32, 32, 32)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(jTFCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(41, 41, 41)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(jComboBoxPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(37, 37, 37)
+                .addComponent(jButtonSalvar)
+                .addContainerGap(28, Short.MAX_VALUE))
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    /**
+     * Botão que insere ou atualiza os dados nas tabelas disciplina e
+     * matriz_has_disciplina; Primeiro chama a função cod(), se o retorno dessa
+     * função for maior que 0, a função chamada é a update(); caso contrário ela
+     * chama as funções insert e insertM_H_D;
+     */
+    private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
+
+        if (cod() > 0) {
+            update();
+        } else {
+            insert();
+            insertM_H_D();
+        }
+    }//GEN-LAST:event_jButtonSalvarActionPerformed
+    /**
+     * Opções da barra de menus: Importar(Importar) Curso(Novo Curso e Pesquisar
+     * Curso) Matriz(Nova Matriz e Pesquisar)
+     */
+    private void jMenuItemImportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemImportarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jMenuItemImportarActionPerformed
+
+    private void jMenuItemNovoCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemNovoCursoActionPerformed
+        JFNovoCurso obj = new JFNovoCurso();
+        obj.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jMenuItemNovoCursoActionPerformed
+
+    private void jMenuItemPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemPesquisarActionPerformed
+        JFPesquisarCurso obj = new JFPesquisarCurso();
+        obj.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jMenuItemPesquisarActionPerformed
+
+    private void jMenuItemNovaMatrizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemNovaMatrizActionPerformed
+        JFNovaMatriz obj = null;
+        obj = new JFNovaMatriz();
+        obj.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jMenuItemNovaMatrizActionPerformed
+
+    private void jMenuItemPesquisarMatrizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemPesquisarMatrizActionPerformed
+        JFPesquisarMatriz obj = new JFPesquisarMatriz();
+        obj.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jMenuItemPesquisarMatrizActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(JFNovaDisciplina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(JFNovaDisciplina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(JFNovaDisciplina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(JFNovaDisciplina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new JFNovaDisciplina().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonSalvar;
+    private javax.swing.JComboBox<String> jComboBoxAnoInicio;
+    private javax.swing.JComboBox<String> jComboBoxNomeCurso;
+    private javax.swing.JComboBox<String> jComboBoxPeriodo;
+    private javax.swing.JComboBox<String> jComboBoxTipoCurso;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenu jMenuImportar;
+    private javax.swing.JMenuItem jMenuItemImportar;
+    private javax.swing.JMenuItem jMenuItemNovaMatriz;
+    private javax.swing.JMenuItem jMenuItemNovoCurso;
+    private javax.swing.JMenuItem jMenuItemPesquisar;
+    private javax.swing.JMenuItem jMenuItemPesquisarMatriz;
+    private javax.swing.JTextField jTFCodigo;
+    private javax.swing.JTextField jTFNomeDisciplina;
+    // End of variables declaration//GEN-END:variables
+
+    /**
+     * Atualiza os JComboBox jComboBoxNomeCurso e jComboBoxAnoInicio; O
+     * jComboBoxNome Curso é atualizado a partir do que é selecionado no
+     * JComboBoxTipoCurso; O jComboBoxAnoInicio é atualizado a partir do que é
+     * selecionado no jComboBoxNomeCurso
+     */
     void updateCombo() {
 
         jComboBoxTipoCurso.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent ie) {
                 jComboBoxNomeCurso.removeAllItems();
-                jComboBoxNomeCurso.addItem("Selecione");
                 List<Object> idCurso = new ArrayList<>();
                 List<Object> nomeCurso = new ArrayList<>();
                 if (ie.getStateChange() == ItemEvent.SELECTED) {
@@ -209,6 +535,15 @@ public class JFNovaDisciplina extends javax.swing.JFrame {
 
     }
 
+    /**
+     * Função para inserir dados na tabela disciplina Depois de inserida 
+     * uma disciplina aparece uma caixa de diálogo perguntando se o 
+     * usuário que inserir outra disciplina; Se sim, outro Frame desse é 
+     * chamado; Se não, aparece outra caixa de diálogo perguntando
+     * se o usuário quer inserir as refrencias bibliográficas referentes a
+     * disciplina criada; Se optar por sim, o usuário é direcionado para o Frame
+     * que insere as referencias bibliográficas
+     */
     void insert() {
 
         String insert = "INSERT INTO disciplina(codDisciplina, nome) "
@@ -226,8 +561,8 @@ public class JFNovaDisciplina extends javax.swing.JFrame {
                 JFNovaDisciplina nova = new JFNovaDisciplina();
                 nova.setVisible(true);
             } else {
-                int opcao = JOptionPane.showConfirmDialog(this, "Deseja inserir a referencia bibliográfica?",
-                        "Atenção", JOptionPane.YES_NO_OPTION);
+                int opcao = JOptionPane.showConfirmDialog(this, "Deseja inserir as Referências Bibliográficas"
+                        + "referentes a essa disciplina?", "Atenção", JOptionPane.YES_NO_OPTION);
                 if (opcao == JOptionPane.YES_OPTION) {
                     String codDisciplina = null;
                     Referencias referencias = new Referencias();
@@ -242,6 +577,7 @@ public class JFNovaDisciplina extends javax.swing.JFrame {
                     referencias.setVisible(true);
                     referencias.setCodDisciplina(getCodigo());
                     referencias.setNomeDisciplina(getNomeDisciplina());
+                    referencias.nomeDis.setText("Referências - " + getNomeDisciplina());
                     stmt1.close();
 
                 }
@@ -251,6 +587,10 @@ public class JFNovaDisciplina extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Função para atualizar o nome e o ano início da matriz a partir do código
+     * da disciplina
+     */
     void update() {
 
         Connection conn = new ConnectionFactory().getConnection();
@@ -267,6 +607,11 @@ public class JFNovaDisciplina extends javax.swing.JFrame {
 
     }
 
+    /**
+     * Contabiliza quantas disciplina tem com o código fornecido pelo usuário
+     *
+     * @return o quantidade de registros na tabela com o código do usuário
+     */
     public int cod() {
         int cod = 0;
         String query = "SELECT count(*) as Cod FROM disciplina "
@@ -285,6 +630,9 @@ public class JFNovaDisciplina extends javax.swing.JFrame {
         return cod;
     }
 
+    /**
+     * Insere dados na tabela matriz_has_disciplina
+     */
     void insertM_H_D() {
         String query = "INSERT INTO matriz_has_disciplina VALUES(" + getIdCurso() + ", "
                 + "" + getAnoInicio() + ", '" + getCodigo() + "', " + getPeriodo() + ")";
@@ -303,299 +651,4 @@ public class JFNovaDisciplina extends javax.swing.JFrame {
 
     }
 
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
-
-        jLabel1 = new javax.swing.JLabel();
-        jComboBoxTipoCurso = new javax.swing.JComboBox<>();
-        jLabel2 = new javax.swing.JLabel();
-        jComboBoxNomeCurso = new javax.swing.JComboBox<>();
-        jLabel3 = new javax.swing.JLabel();
-        jComboBoxAnoInicio = new javax.swing.JComboBox<>();
-        jLabel4 = new javax.swing.JLabel();
-        jTFNomeDisciplina = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        jButtonSalvar = new javax.swing.JButton();
-        jTFCodigo = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jComboBoxPeriodo = new javax.swing.JComboBox<>();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenuImportar = new javax.swing.JMenu();
-        jMenuItemImportar = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItemNovoCurso = new javax.swing.JMenuItem();
-        jMenuItemPesquisar = new javax.swing.JMenuItem();
-        jMenu5 = new javax.swing.JMenu();
-        jMenuItemNovaMatriz = new javax.swing.JMenuItem();
-        jMenuItemPesquisarMatriz = new javax.swing.JMenuItem();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jLabel1.setText("Tipo de curso: ");
-
-        jComboBoxTipoCurso.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
-
-        jLabel2.setText("Curso:");
-
-        jLabel3.setText("Ano início da Matriz: ");
-
-        jLabel4.setText("Nome:");
-
-        jTFNomeDisciplina.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTFNomeDisciplinaActionPerformed(evt);
-            }
-        });
-
-        jLabel5.setText("Código: ");
-
-        jButtonSalvar.setText("Salvar");
-        jButtonSalvar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonSalvarActionPerformed(evt);
-            }
-        });
-
-        jLabel7.setText("Nova disciplina");
-
-        jLabel6.setText("Período: ");
-
-        jComboBoxPeriodo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "1º", "2º", "3º", "4º", "5º", "6º", "7º", "8º" }));
-        jComboBoxPeriodo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBoxPeriodoActionPerformed(evt);
-            }
-        });
-
-        jMenuImportar.setText("Importar");
-
-        jMenuItemImportar.setText("Importar");
-        jMenuItemImportar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemImportarActionPerformed(evt);
-            }
-        });
-        jMenuImportar.add(jMenuItemImportar);
-
-        jMenuBar1.add(jMenuImportar);
-
-        jMenu2.setText("Curso");
-
-        jMenuItemNovoCurso.setText("Novo Curso");
-        jMenuItemNovoCurso.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemNovoCursoActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItemNovoCurso);
-
-        jMenuItemPesquisar.setText("Pesquisar...");
-        jMenuItemPesquisar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemPesquisarActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItemPesquisar);
-
-        jMenuBar1.add(jMenu2);
-
-        jMenu5.setText("Matriz");
-
-        jMenuItemNovaMatriz.setText("Nova Matriz");
-        jMenuItemNovaMatriz.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemNovaMatrizActionPerformed(evt);
-            }
-        });
-        jMenu5.add(jMenuItemNovaMatriz);
-
-        jMenuItemPesquisarMatriz.setText("Pesquisar...");
-        jMenuItemPesquisarMatriz.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemPesquisarMatrizActionPerformed(evt);
-            }
-        });
-        jMenu5.add(jMenuItemPesquisarMatriz);
-
-        jMenuBar1.add(jMenu5);
-
-        setJMenuBar(jMenuBar1);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 327, Short.MAX_VALUE)
-                .addComponent(jButtonSalvar)
-                .addGap(194, 194, 194))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(jComboBoxTipoCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel3))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jComboBoxAnoInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTFNomeDisciplina, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(59, 59, 59)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel6))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTFCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBoxNomeCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBoxPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(58, 58, 58))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addGap(247, 247, 247))))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jLabel7)
-                .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBoxTipoCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(jComboBoxNomeCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5)
-                    .addComponent(jTFCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTFNomeDisciplina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(41, 41, 41)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBoxAnoInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel6)
-                    .addComponent(jComboBoxPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(59, 59, 59)
-                .addComponent(jButtonSalvar)
-                .addContainerGap(41, Short.MAX_VALUE))
-        );
-
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
-
-    private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
-
-        if (cod() > 0) {
-            update();
-        } else {
-            insert();
-            insertM_H_D();
-        }
-    }//GEN-LAST:event_jButtonSalvarActionPerformed
-
-    private void jMenuItemImportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemImportarActionPerformed
-        JFrameMain obj = new JFrameMain();
-        obj.setVisible(true);
-    }//GEN-LAST:event_jMenuItemImportarActionPerformed
-
-    private void jMenuItemNovoCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemNovoCursoActionPerformed
-        JFNovoCurso obj = new JFNovoCurso();
-        obj.setVisible(true);
-    }//GEN-LAST:event_jMenuItemNovoCursoActionPerformed
-
-    private void jMenuItemPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemPesquisarActionPerformed
-        JFPesquisarCurso obj = new JFPesquisarCurso();
-        obj.setVisible(true);
-    }//GEN-LAST:event_jMenuItemPesquisarActionPerformed
-
-    private void jMenuItemNovaMatrizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemNovaMatrizActionPerformed
-        JFNovaMatriz obj = null;
-        obj = new JFNovaMatriz();
-        obj.setVisible(true);
-    }//GEN-LAST:event_jMenuItemNovaMatrizActionPerformed
-
-    private void jMenuItemPesquisarMatrizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemPesquisarMatrizActionPerformed
-        JFPesquisarMatriz obj = new JFPesquisarMatriz();
-        obj.setVisible(true);
-    }//GEN-LAST:event_jMenuItemPesquisarMatrizActionPerformed
-
-    private void jTFNomeDisciplinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTFNomeDisciplinaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTFNomeDisciplinaActionPerformed
-
-    private void jComboBoxPeriodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxPeriodoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxPeriodoActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JFNovaDisciplina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JFNovaDisciplina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JFNovaDisciplina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JFNovaDisciplina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new JFNovaDisciplina().setVisible(true);
-            }
-        });
-    }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonSalvar;
-    private javax.swing.JComboBox<String> jComboBoxAnoInicio;
-    private javax.swing.JComboBox<String> jComboBoxNomeCurso;
-    private javax.swing.JComboBox<String> jComboBoxPeriodo;
-    private javax.swing.JComboBox<String> jComboBoxTipoCurso;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu5;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenu jMenuImportar;
-    private javax.swing.JMenuItem jMenuItemImportar;
-    private javax.swing.JMenuItem jMenuItemNovaMatriz;
-    private javax.swing.JMenuItem jMenuItemNovoCurso;
-    private javax.swing.JMenuItem jMenuItemPesquisar;
-    private javax.swing.JMenuItem jMenuItemPesquisarMatriz;
-    private javax.swing.JTextField jTFCodigo;
-    private javax.swing.JTextField jTFNomeDisciplina;
-    // End of variables declaration//GEN-END:variables
 }

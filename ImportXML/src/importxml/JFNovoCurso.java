@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
@@ -24,13 +25,15 @@ import javax.swing.JTextField;
  */
 public class JFNovoCurso extends javax.swing.JFrame {
 
+    //Delaração de variáveis
     JTextField jTxt1, jTFV;
     JComboBox<String> jCbx1;
+    JLabel jLB;
     JButton jButton;
     int id;
-    String nomeCurso, vagas;
-    String tipoCurso;
+    String nomeCurso, vagas, tipoCurso;
 
+    // Funções Getters e Setters
     public String getVagas() {
         vagas = jTFVagas.getText();
         return vagas;
@@ -41,6 +44,7 @@ public class JFNovoCurso extends javax.swing.JFrame {
     }
 
     public String getNomeCurso() {
+        nomeCurso = jTFNomeCurso.getText();
         return nomeCurso;
     }
 
@@ -49,6 +53,7 @@ public class JFNovoCurso extends javax.swing.JFrame {
     }
 
     public String getTipoCurso() {
+        tipoCurso = jComboBoxTipoCurso.getSelectedItem().toString();
         return tipoCurso;
     }
 
@@ -65,7 +70,7 @@ public class JFNovoCurso extends javax.swing.JFrame {
     }
 
     /**
-     * Creates new form JFNovoCurso
+     * Método Construtor
      */
     public JFNovoCurso() {
 
@@ -81,7 +86,7 @@ public class JFNovoCurso extends javax.swing.JFrame {
         this.jCbx1 = jComboBoxTipoCurso;
         this.jButton = jButtonSalvar;
         this.jTFV = jTFVagas;
-
+        this.jLB = jLabel3;
     }
 
     @SuppressWarnings("unchecked")
@@ -99,23 +104,19 @@ public class JFNovoCurso extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuCurso = new javax.swing.JMenu();
         jMenuPrincipal = new javax.swing.JMenuItem();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuNovaDisiciplina = new javax.swing.JMenuItem();
-        jMenuPesquisarDisciplina = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuNovaMatriz = new javax.swing.JMenuItem();
         jMenuPesquisarMatriz = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuNovaDisiciplina = new javax.swing.JMenuItem();
+        jMenuPesquisarDisciplina = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jLabel1.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jLabel1.setText("Nome do curso: ");
 
-        jTFNomeCurso.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTFNomeCursoActionPerformed(evt);
-            }
-        });
-
+        jLabel2.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jLabel2.setText("Tipo: ");
 
         jButtonSalvar.setText("Salvar");
@@ -125,15 +126,13 @@ public class JFNovoCurso extends javax.swing.JFrame {
             }
         });
 
+        jLabel3.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jLabel3.setText("--  Novo Curso --");
 
-        jComboBoxTipoCurso.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBoxTipoCurso.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBoxTipoCursoActionPerformed(evt);
-            }
-        });
+        jComboBoxTipoCurso.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jComboBoxTipoCurso.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", " " }));
 
+        jLabel4.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jLabel4.setText("Vagas: ");
 
         jMenuCurso.setText("Importar");
@@ -147,26 +146,6 @@ public class JFNovoCurso extends javax.swing.JFrame {
         jMenuCurso.add(jMenuPrincipal);
 
         jMenuBar1.add(jMenuCurso);
-
-        jMenu1.setText("Disciplina");
-
-        jMenuNovaDisiciplina.setText("Novo...");
-        jMenuNovaDisiciplina.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuNovaDisiciplinaActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuNovaDisiciplina);
-
-        jMenuPesquisarDisciplina.setText("Pesquisar...");
-        jMenuPesquisarDisciplina.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuPesquisarDisciplinaActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuPesquisarDisciplina);
-
-        jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Matriz");
 
@@ -187,6 +166,26 @@ public class JFNovoCurso extends javax.swing.JFrame {
         jMenu2.add(jMenuPesquisarMatriz);
 
         jMenuBar1.add(jMenu2);
+
+        jMenu1.setText("Disciplina");
+
+        jMenuNovaDisiciplina.setText("Novo...");
+        jMenuNovaDisiciplina.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuNovaDisiciplinaActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuNovaDisiciplina);
+
+        jMenuPesquisarDisciplina.setText("Pesquisar...");
+        jMenuPesquisarDisciplina.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuPesquisarDisciplinaActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuPesquisarDisciplina);
+
+        jMenuBar1.add(jMenu1);
 
         setJMenuBar(jMenuBar1);
 
@@ -213,7 +212,7 @@ public class JFNovoCurso extends javax.swing.JFrame {
                     .addComponent(jTFNomeCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBoxTipoCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTFVagas, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(68, Short.MAX_VALUE))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -240,118 +239,49 @@ public class JFNovoCurso extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Opções da barra de menus: Importar(Importar) Matriz(Nova Matriz e
+     * Pesquisar Matriz) Disciplina(Nova Disciplina e Pesquisar)
+     */
     private void jMenuPrincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuPrincipalActionPerformed
-        JFrameMain obj = new JFrameMain();
-        obj.setVisible(true);
-
+        this.dispose();
     }//GEN-LAST:event_jMenuPrincipalActionPerformed
 
     private void jMenuNovaDisiciplinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuNovaDisiciplinaActionPerformed
         JFNovaDisciplina obj = null;
         obj = new JFNovaDisciplina();
         obj.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jMenuNovaDisiciplinaActionPerformed
 
     private void jMenuPesquisarDisciplinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuPesquisarDisciplinaActionPerformed
         JFPesquisarDisciplina obj = new JFPesquisarDisciplina();
         obj.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jMenuPesquisarDisciplinaActionPerformed
 
     private void jMenuNovaMatrizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuNovaMatrizActionPerformed
         JFNovaMatriz obj = null;
         obj = new JFNovaMatriz();
         obj.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jMenuNovaMatrizActionPerformed
 
     private void jMenuPesquisarMatrizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuPesquisarMatrizActionPerformed
         JFPesquisarMatriz obj = new JFPesquisarMatriz();
         obj.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jMenuPesquisarMatrizActionPerformed
 
-    private void jTFNomeCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTFNomeCursoActionPerformed
-
-    }//GEN-LAST:event_jTFNomeCursoActionPerformed
-
+    /**
+     * Botão que insere os dados fornecidos pelo usuário na tabela curso. Chama
+     * a a função inOrUp(),que verifica o campo idCurso; Caso ele seja igual a
+     * 0, chama a função inserirDados(); Caso contrário, chama a função
+     * updateDados()
+     */
     private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
-
         inOrUp();
     }//GEN-LAST:event_jButtonSalvarActionPerformed
-
-    void inOrUp() {
-
-        if (getId() == 0) {
-            inserirDados();
-        } else {
-            updateTable();
-        }
-
-    }
-
-    void inserirDados() {
-        Connection con = new ConnectionFactory().getConnection();
-        String nomeCurso = jTFNomeCurso.getText();
-        String tipoCurso = jComboBoxTipoCurso.getSelectedItem().toString();
-
-        try {
-            PreparedStatement stmt = (PreparedStatement) con.prepareStatement("INSERT INTO curso (nomeCurso, tipoCurso, vagas) VALUES( "
-                    + "'" + nomeCurso + "', "
-                    + "'" + tipoCurso + "', "
-                    + "'" + getVagas() + "'"
-                    + ")");
-            stmt.executeUpdate();
-            stmt.close();
-
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Erro");
-            ex.printStackTrace();
-        } finally {
-            try {
-                JOptionPane.showMessageDialog(this, "Registro salvo");
-                this.dispose();
-                con.close();
-
-            } catch (SQLException ex) {
-                Logger.getLogger(JFNovoCurso.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-    }
-
-    void updateTable() {
-
-        Connection conn = new ConnectionFactory().getConnection();
-
-        setNomeCurso(jTxt1.getText());
-        setTipoCurso(jComboBoxTipoCurso.getSelectedItem().toString());
-        setVagas(jTFVagas.getText());
-        jTFVagas.setText(getVagas());
-
-        String queryUp = "UPDATE curso SET nomeCurso = '" + nomeCurso + "'"
-                + ", tipoCurso = '" + tipoCurso + "', vagas = '" + getVagas() + "' WHERE idCurso = "
-                + "'" + getId() + "'";
-
-        try {
-            java.sql.PreparedStatement stmt1 = conn.prepareStatement(queryUp);
-            stmt1.executeUpdate();
-            stmt1.close();
-            conn.close();
-
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                JOptionPane.showMessageDialog(this, "Atualizado");
-                this.dispose();
-                conn.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(JFNovoCurso.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }
-
-    private void jComboBoxTipoCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTipoCursoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxTipoCursoActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -404,4 +334,100 @@ public class JFNovoCurso extends javax.swing.JFrame {
     private javax.swing.JTextField jTFNomeCurso;
     private javax.swing.JTextField jTFVagas;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * verifica o campo idCurso; Caso ele seja igual a 0, chama a função
+     * inserirDados(); Caso contrário, chama a função
+     */
+    void inOrUp() {
+
+        if (getId() == 0) {
+            inserirDados();
+            int opcao = JOptionPane.showConfirmDialog(this, "Deseja criar a Matriz Curricular referente"
+                    + "a esse curso?", "Atenção", JOptionPane.YES_NO_OPTION);
+            if (opcao == JOptionPane.YES_OPTION) {
+                JFNovaMatriz matriz = new JFNovaMatriz();
+                matriz.setIdCurso(getId());
+                matriz.jCTP.setSelectedItem(getTipoCurso());
+                matriz.jCNC.setSelectedItem(getNomeCurso());
+                matriz.jCNC.setEditable(false);
+                matriz.jCTP.setEditable(false);
+                matriz.setVisible(true);
+                this.dispose();
+            }
+
+        } else {
+            updateDados();
+        }
+
+    }
+
+    /**
+     * Função para inserir dados na tabela curso
+     */
+    void inserirDados() {
+        Connection con = new ConnectionFactory().getConnection();
+        String nomeCurso = jTFNomeCurso.getText();
+        String tipoCurso = jComboBoxTipoCurso.getSelectedItem().toString();
+
+        try {
+            PreparedStatement stmt = (PreparedStatement) con.prepareStatement("INSERT INTO curso (nomeCurso, tipoCurso, vagas) VALUES( "
+                    + "'" + nomeCurso + "', "
+                    + "'" + tipoCurso + "', "
+                    + "'" + getVagas() + "'"
+                    + ")");
+            stmt.executeUpdate();
+            stmt.close();
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Erro");
+            ex.printStackTrace();
+        } finally {
+            try {
+                JOptionPane.showMessageDialog(this, "Registro salvo");
+                this.dispose();
+                con.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(JFNovoCurso.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+    }
+
+    //Função que atualiza os dados de um curso a partir do campo idCurso
+    void updateDados() {
+
+        Connection conn = new ConnectionFactory().getConnection();
+
+        setNomeCurso(jTxt1.getText());
+        setTipoCurso(jComboBoxTipoCurso.getSelectedItem().toString());
+        setVagas(jTFVagas.getText());
+        jTFVagas.setText(getVagas());
+
+        String queryUp = "UPDATE curso SET nomeCurso = '" + nomeCurso + "'"
+                + ", tipoCurso = '" + tipoCurso + "', vagas = '" + getVagas() + "' WHERE idCurso = "
+                + "'" + getId() + "'";
+
+        try {
+            java.sql.PreparedStatement stmt1 = conn.prepareStatement(queryUp);
+            stmt1.executeUpdate();
+            stmt1.close();
+            conn.close();
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Erro ao atualizar");
+        } finally {
+            try {
+                JOptionPane.showMessageDialog(this, "Atualizado");
+                this.dispose();
+                conn.close();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(JFNovoCurso.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 }

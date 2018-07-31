@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -20,15 +21,18 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Referencias extends javax.swing.JFrame {
 
+    //Declaração de variáveis
     Connection con = new ConnectionFactory().getConnection();
     JTable table = new JTable();
     DefaultTableModel modelo = new DefaultTableModel();
     String titulo, codDisciplina, nomeDisciplina, autor;
     int tipoRef;
     JTextField jTTitulo, jTFAutor;
+    JLabel nomeDis;
     long idPHL;
     List<Long> resultList = new ArrayList<>();
 
+    //Métodos Getters e Setters
     public long getIdPHL() {
         int t = table.getSelectedRow();
         idPHL = resultList.get(t);
@@ -85,65 +89,14 @@ public class Referencias extends javax.swing.JFrame {
     public void setAutor(String autor) {
         this.autor = autor;
     }
-    
-    
 
+    //Método Constructor
     public Referencias() {
         initComponents();
         ButtonGroup buttonGroupR = new ButtonGroup();
         buttonGroupR.add(jRadioBasica);
         buttonGroupR.add(jRadioComplementar);
-
-    }
-
-    void popularJTable() {
-        
-      
-        modelo = (DefaultTableModel) table.getModel();
-        modelo.addColumn("Título");
-        modelo.addColumn("Autor");
-        modelo.addColumn("Editora");
-        modelo.addColumn("Ano publicação");
-        modelo.addColumn("Quantidade de exemplares");
-
-        String query = "SELECT DISTINCT idPHL, titulo, autor, editora, anoPublicacao, qtdEx FROM catalogo "
-                + "WHERE titulo LIKE '%" + getTitulo() + "%' AND autor LIKE '%" + getAutor() + "%'";
-
-        try {
-            PreparedStatement stmt = con.prepareStatement(query);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                modelo.addRow(new Object[]{
-                    rs.getString("titulo"),
-                    rs.getString("autor"),
-                    rs.getString("editora"),
-                    rs.getString("anoPublicacao"),
-                    rs.getInt("qtdEx")
-                });
-                resultList.add(rs.getLong("idPHL"));
-                
-            }
-            stmt.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-
-        table.setModel(modelo);
-        jScrollPaneReferencias.setViewportView(table);
-
-    }
-
-    void insert() {
-        String ins2 = "INSERT INTO disciplina_livros(livro, disciplina, tipoReferencia) VALUES ("
-                + "" + getIdPHL() + ", '" + getCodDisciplina() + "', " + getTipoRef() + ")";
-        try {
-            PreparedStatement stmt2 = con.prepareStatement(ins2);
-            stmt2.executeUpdate();
-            JOptionPane.showMessageDialog(this, "Inserido com sucesso");
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Impossível Inserir");
-            ex.printStackTrace();
-        }
+        this.nomeDis = jLabel1;
 
     }
 
@@ -156,7 +109,7 @@ public class Referencias extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jTFTitulo = new javax.swing.JTextField();
         jButtonPesquisar = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
+        jLabelDisc = new javax.swing.JLabel();
         jScrollPaneReferencias = new javax.swing.JScrollPane();
         jButtonAdicionar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
@@ -164,10 +117,9 @@ public class Referencias extends javax.swing.JFrame {
         jRadioComplementar = new javax.swing.JRadioButton();
         jLabel4 = new javax.swing.JLabel();
         jTextFieldAutor = new javax.swing.JTextField();
+        jLabelNome = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jLabel1.setText("Referências bibliográficas");
 
         jLabel6.setText("Título:");
 
@@ -177,8 +129,6 @@ public class Referencias extends javax.swing.JFrame {
                 jButtonPesquisarActionPerformed(evt);
             }
         });
-
-        jLabel2.setText("jLabel2");
 
         jButtonAdicionar.setText("Adicionar");
         jButtonAdicionar.addActionListener(new java.awt.event.ActionListener() {
@@ -194,6 +144,8 @@ public class Referencias extends javax.swing.JFrame {
         jRadioComplementar.setText("Complementar");
 
         jLabel4.setText("Autor");
+
+        jLabelNome.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -215,10 +167,8 @@ public class Referencias extends javax.swing.JFrame {
                                 .addComponent(jTextFieldAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(245, 245, 245)
-                            .addComponent(jLabel1)
-                            .addGap(40, 40, 40)
-                            .addComponent(jLabel2))
+                            .addGap(407, 407, 407)
+                            .addComponent(jLabelDisc))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addContainerGap()
                             .addComponent(jScrollPaneReferencias, javax.swing.GroupLayout.PREFERRED_SIZE, 690, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -227,24 +177,33 @@ public class Referencias extends javax.swing.JFrame {
                             .addComponent(jLabel6)
                             .addGap(18, 18, 18)
                             .addComponent(jTFTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(150, 150, 150)
-                .addComponent(jLabel3)
-                .addGap(18, 18, 18)
-                .addComponent(jRadioBasica)
-                .addGap(93, 93, 93)
-                .addComponent(jRadioComplementar)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(150, 150, 150)
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(jRadioBasica)
+                        .addGap(93, 93, 93)
+                        .addComponent(jRadioComplementar))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(294, 294, 294)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabelNome, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(jLabelDisc)
+                .addGap(17, 17, 17)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel2))
-                .addGap(52, 52, 52)
+                    .addComponent(jLabelNome, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(35, 35, 35)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTFTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6)
@@ -270,36 +229,36 @@ public class Referencias extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Botão para adicionar refereências bibliográficas
+     */
     private void jButtonAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdicionarActionPerformed
         insert();
         int opcao = JOptionPane.showConfirmDialog(this, "Deseja inserir outra referencia?",
                 "Atenção", JOptionPane.YES_NO_OPTION);
-        if (opcao == JOptionPane.YES_OPTION){
+        if (opcao == JOptionPane.YES_OPTION) {
             Referencias janela = new Referencias();
             janela.setCodDisciplina(getCodDisciplina());
             this.dispose();
             janela.setVisible(true);
         }
     }//GEN-LAST:event_jButtonAdicionarActionPerformed
-
+    //Botão pesquisar que chama a função popularJtable
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
-        for(int i = 0; i < modelo.getRowCount(); i++){
-            modelo.removeRow(i);
-        }
         popularJTable();
     }//GEN-LAST:event_jButtonPesquisarActionPerformed
 
@@ -342,10 +301,11 @@ public class Referencias extends javax.swing.JFrame {
     private javax.swing.JButton jButtonAdicionar;
     private javax.swing.JButton jButtonPesquisar;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabelDisc;
+    private javax.swing.JLabel jLabelNome;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JRadioButton jRadioBasica;
     private javax.swing.JRadioButton jRadioComplementar;
@@ -353,5 +313,60 @@ public class Referencias extends javax.swing.JFrame {
     private javax.swing.JTextField jTFTitulo;
     private javax.swing.JTextField jTextFieldAutor;
     // End of variables declaration//GEN-END:variables
+
+    //Função para popular a JTable de acordo com os resultados dos filtros
+    void popularJTable() {
+
+        modelo = (DefaultTableModel) table.getModel();
+        modelo.addColumn("Título");
+        modelo.addColumn("Autor");
+        modelo.addColumn("Editora");
+        modelo.addColumn("Ano publicação");
+        modelo.addColumn("Quantidade de exemplares");
+
+        String query = "SELECT DISTINCT idPHL, titulo, autor, editora, anoPublicacao, qtdEx FROM catalogo "
+                + "WHERE titulo LIKE '%" + getTitulo() + "%' AND autor LIKE '%" + getAutor() + "%'";
+
+        try {
+            PreparedStatement stmt = con.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                modelo.addRow(new Object[]{
+                    rs.getString("titulo"),
+                    rs.getString("autor"),
+                    rs.getString("editora"),
+                    rs.getString("anoPublicacao"),
+                    rs.getInt("qtdEx")
+                });
+                resultList.add(rs.getLong("idPHL"));
+
+            }
+            stmt.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        table.setModel(modelo);
+        jScrollPaneReferencias.setViewportView(table);
+
+    }
+
+    /**
+     * Função para inserir dados na tabela disciplina_livros Com valores obtidos
+     * nos métodos Getters e Setters
+     */
+    void insert() {
+        String ins2 = "INSERT INTO disciplina_livros(livro, disciplina, tipoReferencia) VALUES ("
+                + "" + getIdPHL() + ", '" + getCodDisciplina() + "', " + getTipoRef() + ")";
+        try {
+            PreparedStatement stmt2 = con.prepareStatement(ins2);
+            stmt2.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Inserido com sucesso");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Impossível Inserir");
+            ex.printStackTrace();
+        }
+
+    }
 
 }

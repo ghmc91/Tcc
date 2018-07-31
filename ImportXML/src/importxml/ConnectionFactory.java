@@ -21,10 +21,10 @@ public class ConnectionFactory {
     Connection con;
     
     public Connection getConnection(){
-        
-        String url = "jdbc:mysql://200.131.251.11:8090/tcc2";
+        //URL da conexão
+        String url = "jdbc:mysql://localhost/tcc2";
         try {
-            return (Connection) DriverManager.getConnection(url,"gustavogti", "tcc2018");
+            return (Connection) DriverManager.getConnection(url,"root", "GUstavo08!");
         }catch(SQLException ex){
             System.out.println("Problemas na conexão " + ex.getMessage());
             return null;
